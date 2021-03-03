@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
-import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
+import 'package:tcp_workers/app/common/appbar.dart';
+import 'package:tcp_workers/app/common/drawer.dart';
 import 'package:tcp_workers/app/common/home_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tcp_workers/app/views/Job/Job_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,8 +19,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return GetBuilder(
       builder: (_)=> Scaffold(
-        appBar: _appBar(),
-        drawer: _drawer(),
+        appBar: MyAppBar(),
+        drawer: DrawerItem(),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 20),
@@ -28,6 +30,7 @@ class _HomePageState extends State<HomePage> {
                 text: 'My jobs',
                 icon: CupertinoIcons.hammer_fill,
                 number: 2.toString(),
+                function: ()=> Get.to(JobPage()),
               ),
 
               SizedBox(height: 20.sp),
@@ -36,6 +39,7 @@ class _HomePageState extends State<HomePage> {
                 text: 'History',
                 icon: CupertinoIcons.time,
                 number: 10.toString(),
+                function: ()=> Get.to(JobPage()),
               ),
 
               SizedBox(height: 20.sp,),
@@ -76,37 +80,6 @@ class _HomePageState extends State<HomePage> {
             hoverColor: Colors.grey[300],
           )
         ],
-      ),
-    );
-  }
-  
-  _appBar(){
-    return AppBar(
-      title: new Column(children:[
-        Text('Techno contructions +'.toUpperCase(), style: subTitleWhiteFont),
-        Text('by Techno Business Plus', style:minimalWhiteFont)
-      ]),
-      centerTitle: true,
-      backgroundColor: main_color,
-      primary: true,
-      actions:[
-        new IconButton(
-          icon: Icon(CupertinoIcons.square_arrow_right), onPressed: ()=> print('salio'))
-      ]
-    );
-  }
-
-  _drawer(){
-    return Drawer(
-      
-      semanticLabel: 'hola',
-      child: new Container(
-        color: Colors.transparent,
-        height: Get.height,
-        width: Get.width,
-        child: Center(
-          child: new Text('Drawer'),
-        ),
       ),
     );
   }

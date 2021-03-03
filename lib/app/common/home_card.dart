@@ -9,15 +9,18 @@ class HomeCard extends StatelessWidget {
   final String text;
   final String number;
   final IconData icon;
+  final Function function;
   HomeCard({
     @required this.text, 
     @required this.number, 
-    @required this.icon
+    @required this.icon,
+    @required this.function
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: function,
       child: Container(
         height: Get.height / 3,
         padding: EdgeInsets.only(top:15.sp),

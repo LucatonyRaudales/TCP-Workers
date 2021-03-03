@@ -31,8 +31,10 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
             padding: const EdgeInsets.only(left: 10,right: 10),
+            height: 55.sp,
+            width: 400,
             child: TextFormField(
               onChanged: widget.onChanged ,
               validator: widget.validatorText != null ? (value) {
@@ -56,21 +58,14 @@ class _InputState extends State<Input> {
                   borderRadius: BorderRadius.circular(25.0),
                   borderSide: BorderSide(
                       color: second_color,
-                      width: 2.w,
+                      width: 1.w,
                   ),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
                   borderSide: BorderSide(
                     color: main_color,
-                    width: 2.w,
-                  ),
-                ),
-                enabledBorder:OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(
-                    color: second_color,
-                    width: 2.w,
+                    width: 1.w,
                   ),
                 ),
               )
