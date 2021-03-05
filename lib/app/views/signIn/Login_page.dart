@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,8 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/textFormField.dart';
+import 'package:tcp_workers/app/common/validations.dart';
+import 'package:tcp_workers/app/views/signUp/signup_page.dart';
 
 import 'login_controller.dart';
 
@@ -31,15 +34,15 @@ class _SignInPageState extends State<SignInPage> {
       ],),
     );
 
-  /*   final signUpBtn = new Padding(
-      padding: EdgeInsets.only(top:35.ssp),
-      child: RichText(text: TextSpan(
-        children:<TextSpan>[
-          TextSpan(text:"Don't have an account? ", style: bodyFontBold),
-          TextSpan(text: "Register Now!", style: TextStyle(fontSize: 45.ssp, color: Colors.white, fontWeight: FontWeight.bold), recognizer: new TapGestureRecognizer()..onTap = ()=> Get.to(SignUpPage()))
-        ]
-      ))
-      ); */
+  final signUpBtn = new Padding(
+    padding: EdgeInsets.only(top:20.ssp),
+    child: RichText(text: TextSpan(
+      children:<TextSpan>[
+        TextSpan(text:"Don't have an account? ", style: bodyFontBold),
+        TextSpan(text: "Register Now!", style: TextStyle(fontSize: 13.ssp, color: Colors.lightBlue, fontWeight: FontWeight.bold), recognizer: new TapGestureRecognizer()..onTap = ()=> Get.to(SignUpPage()))
+      ]
+    ))
+  ); 
 
     return GetBuilder<LoginCtrl>(
       init: LoginCtrl(),
@@ -65,7 +68,7 @@ class _SignInPageState extends State<SignInPage> {
                     icon: Icons.email, 
                     controller: _email, 
                     textInputType: TextInputType.emailAddress,
-                    validatorText: 'Email is required',
+                    validator: Validations.validateemail,
                   ),
                   SizedBox(height: 15.0.sp),
                   Input(
@@ -79,15 +82,15 @@ class _SignInPageState extends State<SignInPage> {
                   Padding(
                     padding: EdgeInsets.only(top:25.sp),
                     child: RoundedLoadingButton(
-                              color: main_color,
-                              errorColor: second_color,
-                              child: Text('Sign In', style: TextStyle(color: Colors.white)),
-                              controller: _.btnController,
-                              onPressed:()=> _.loginWithEmail(),
-                            ),
+                      color: main_color,
+                      errorColor: second_color,
+                      child: Text('Sign In', style: TextStyle(color: Colors.white)),
+                      controller: _.btnController,
+                      onPressed:()=> _.loginWithEmail(),
+                    ),
                   ),
 
-                  //signUpBtn
+                  signUpBtn
                 ],),
                 )
             ),

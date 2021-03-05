@@ -7,6 +7,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(55);
 
+  void logout(){
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return  AppBar(

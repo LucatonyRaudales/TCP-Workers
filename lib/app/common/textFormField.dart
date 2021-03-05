@@ -10,7 +10,7 @@ class Input extends StatefulWidget {
   TextEditingController controller;
   TextInputType textInputType;
   bool obscureText;
-  String validatorText;
+  String Function(String) validator;
   String initialValue;
   void Function(String) onChanged;
   Input({
@@ -21,7 +21,7 @@ class Input extends StatefulWidget {
     @required this.textInputType,
     this.onChanged,
     this.obscureText,
-    this.validatorText,
+    this.validator,
     this.initialValue
     }) : super(key: key);
   @override
@@ -32,44 +32,39 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return Container(
-            padding: const EdgeInsets.only(left: 10,right: 10),
-            height: 55.sp,
-            width: 400,
-            child: TextFormField(
-              onChanged: widget.onChanged ,
-              validator: widget.validatorText != null ? (value) {
-                if (value.isEmpty) {
-                  return widget.validatorText;
-                }
-                return null;
-              } : null,
-              initialValue: widget.initialValue,
-              obscureText: widget.obscureText == true,
-              controller: widget.controller,
-              keyboardType: widget.textInputType,
-              decoration: InputDecoration(
-                fillColor: main_color,
-                labelText: widget.hintText,
-                labelStyle: TextStyle(color: main_color),
-                hintText: widget.hintText,
-                hintStyle: TextStyle(color: main_color),
-                prefixIcon: widget.icon  != null ? Icon(widget.icon, color: main_color,) : null,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(
-                      color: second_color,
-                      width: 1.w,
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(
-                    color: main_color,
-                    width: 1.w,
-                  ),
-                ),
-              )
+      width: 380.sp,
+      child:TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        onChanged: widget.onChanged ,
+        validator: widget.validator,
+        initialValue: widget.initialValue,
+        obscureText: widget.obscureText == true,
+        controller: widget.controller,
+        keyboardType: widget.textInputType,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(25.0, 15.0, 25.0, 15.0),
+          fillColor: main_color,
+          labelText: widget.hintText,
+          labelStyle: TextStyle(color: main_color),
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: main_color),
+          prefixIcon: widget.icon  != null ? Icon(widget.icon, color: main_color,) : null,
+          focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(
+              color: second_color,
+              width: 1.w,
             ),
-        );
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(
+              color: main_color,
+              width: 1.w,
+            ),
+          ),
+        )
+      )
+    );
   }
 }
