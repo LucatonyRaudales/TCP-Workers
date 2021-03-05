@@ -5,9 +5,9 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/textFormField.dart';
+import 'package:tcp_workers/app/common/validations.dart';
 import 'package:tcp_workers/app/views/signUp/signup_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
 
 class SignUpPage extends StatelessWidget {
   final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
@@ -34,9 +34,10 @@ class SignUpPage extends StatelessWidget {
   }
 
   Widget body({SignUpCtrl ctrl}){
-    return FormField(
-      builder: (FormFieldState formFieldState){
-        return new Column(children: [
+    var _formKey = GlobalKey<FormState>(); 
+    return Form( 
+          key: _formKey, 
+          child: Column(children: [
           new Text('Sign up', style: titleFont,),
 
           new SizedBox(height: 25.sp,),
@@ -47,7 +48,7 @@ class SignUpPage extends StatelessWidget {
             controller: fName,
             textInputType: TextInputType.text,
             obscureText: false,
-            validator: ctrl.validateName,
+            validator: Validations.validateName,
           ),
 
           new SizedBox(height: 15.sp,),
@@ -58,7 +59,7 @@ class SignUpPage extends StatelessWidget {
             controller: lName,
             textInputType: TextInputType.text,
             obscureText: false,
-            validator: ctrl.validateName,
+            validator: Validations.validateName,
           ),
 
           new SizedBox(height: 15.sp,),
@@ -68,13 +69,10 @@ class SignUpPage extends StatelessWidget {
             icon: CupertinoIcons.person_alt_circle, 
             onChanged:(val){
               ctrl.nName = val;
-              val != '' ?
-              ctrl.verifyNickName(nick: val)
-              : print('vacio');
             },
             textInputType: TextInputType.text,
             obscureText: false,
-            validator: ctrl.validateName,
+            validator: Validations.validateName,
           ),
 
           new SizedBox(height: 15.sp,),
@@ -85,7 +83,7 @@ class SignUpPage extends StatelessWidget {
             controller: email,
             textInputType: TextInputType.emailAddress,
             obscureText: false,
-            validator: ctrl.validateemail,
+            validator: Validations.validateemail,
           ),
 
           new SizedBox(height: 15.sp,),
@@ -96,6 +94,7 @@ class SignUpPage extends StatelessWidget {
             controller: password,
             textInputType: TextInputType.emailAddress,
             obscureText: true,
+            validator: Validations.validatePassword,
           ),
 
           Padding(
@@ -106,17 +105,17 @@ class SignUpPage extends StatelessWidget {
               successColor: Colors.green,
               child: Text('Sign Up', style: TextStyle(color: Colors.white)),
               controller: btnController,
-              onPressed:()=> ctrl.signUp(
+              onPressed:()=> _formKey.currentState.validate() ? ctrl.signUp(
                 fName: fName.value.text,
                 lName: lName.value.text,
                 email: email.value.text,
                 password: password.value.text,
                 btnCtrl: btnController
-              ),
+              ) : btnController.stop(),
                         ),
                       ),
-        ],);
-      },
+            
+        ],)
     );
   }
 }

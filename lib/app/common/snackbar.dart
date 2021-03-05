@@ -14,7 +14,7 @@ class MySnackBar{
       '', 
       '',
       titleText: new Text(title, style: subTitleWhiteFontBold),
-      messageText: new Text(message, style:bodyFontWhite, overflow: TextOverflow.ellipsis),
+      messageText: new Text(message, style:bodyFontWhite, overflow: TextOverflow.visible),
       snackPosition: SnackPosition.TOP,
       borderRadius: 20.0,
       backgroundColor: backgroundColor,

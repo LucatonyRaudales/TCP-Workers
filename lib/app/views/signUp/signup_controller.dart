@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
@@ -14,6 +16,7 @@ class SignUpCtrl extends GetxController{
   String nName;
   bool isconnecting = false;
   bool nickIsUsed = true;
+  final box = GetStorage();
 
 @override
   void onInit() {
@@ -21,44 +24,35 @@ class SignUpCtrl extends GetxController{
     super.onInit();
   }
 
-  String validateemail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
-  }
-
-  String validateName(String value) {
-    if (value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return null;
-  }
-
-  void verifyNickName({String nick})async{
+  Future<bool> validateNickName(String nick)async{
     try {
-      var response = await http.get(GlobalVariables.api + "/worker/verifyUserName/$nick");
-      print(response.body);
-      switch (response.body) {
-        case 'true':
-          nickIsUsed = true;
-        break;
-        case 'false':
-          nickIsUsed = false;
-        break;
-        default:
-        print('no se que onda my friend');
-        break;
-      }
+      var response;
+      response = await http.get(GlobalVariables.api + "/worker/verifyUserName/$nick");
+          switch (response.body) {
+          case 'true':
+            return true;
+          break;
+          default:
+            return false;
+          break;
+        }
     } catch (e) {
+      return null;
     }
   }
 
   void signUp({String fName, String lName, String email, String password, RoundedLoadingButtonController btnCtrl})async{
     try{
+      bool nickIsUsed =  await validateNickName(nName);
+      if(nickIsUsed){
+      btnCtrl.stop();
+      return MySnackBar.show(
+        title: 'Nickname is used', 
+        message: 'The nickname $nName is already used, choose another one!...', 
+        backgroundColor: main_color, 
+        icon: CupertinoIcons.person_crop_circle_fill_badge_xmark
+      );
+      }
       var response = await http.post(GlobalVariables.api + '/worker/signup',
       body: {
         'firstName' : fName,
@@ -70,6 +64,9 @@ class SignUpCtrl extends GetxController{
       switch (response.statusCode) {
         case 200:
           btnCtrl.success();
+          var decode = json.decode(response.body);
+          await box.write('userData', decode['user']);
+          await box.write('userToken', decode['token']);
           MySnackBar.show(title: 'Welcome!', message: 'You are a new user $fName!...', backgroundColor: Colors.green, icon: CupertinoIcons.person_crop_circle_badge_checkmark);
           Timer(Duration(seconds: 3), ()=> Get.to(HomePage()));
         break;
