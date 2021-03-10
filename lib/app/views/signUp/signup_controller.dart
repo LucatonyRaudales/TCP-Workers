@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,19 +9,13 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
-import 'package:tcp_workers/app/views/Home/home_page.dart';
+import 'package:tcp_workers/app/views/signIn/Login_page.dart';
 
 class SignUpCtrl extends GetxController{
   String nName;
   bool isconnecting = false;
   bool nickIsUsed = true;
   final box = GetStorage();
-
-@override
-  void onInit() {
-    print(GlobalVariables.api);
-    super.onInit();
-  }
 
   Future<bool> validateNickName(String nick)async{
     try {
@@ -64,11 +57,8 @@ class SignUpCtrl extends GetxController{
       switch (response.statusCode) {
         case 200:
           btnCtrl.success();
-          var decode = json.decode(response.body);
-          await box.write('userData', decode['user']);
-          await box.write('userToken', decode['token']);
-          MySnackBar.show(title: 'Welcome!', message: 'You are a new user $fName!...', backgroundColor: Colors.green, icon: CupertinoIcons.person_crop_circle_badge_checkmark);
-          Timer(Duration(seconds: 3), ()=> Get.to(HomePage()));
+          MySnackBar.show(title: 'Welcome  $fName!', message: 'You are a new user. Please, log in with your credentials.', backgroundColor: Colors.green, icon: CupertinoIcons.person_crop_circle_badge_checkmark);
+          Timer(Duration(seconds: 3), ()=> Get.off(SignInPage()));
         break;
         case 500:
           btnCtrl.error();

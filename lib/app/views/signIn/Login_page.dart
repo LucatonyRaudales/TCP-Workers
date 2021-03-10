@@ -8,7 +8,6 @@ import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/textFormField.dart';
 import 'package:tcp_workers/app/common/validations.dart';
 import 'package:tcp_workers/app/views/signUp/signup_page.dart';
-
 import 'login_controller.dart';
 
 class SignInPage extends StatefulWidget {
@@ -86,7 +85,9 @@ class _SignInPageState extends State<SignInPage> {
                       errorColor: second_color,
                       child: Text('Sign In', style: TextStyle(color: Colors.white)),
                       controller: _.btnController,
-                      onPressed:()=> _.loginWithEmail(),
+                      onPressed:()=> _formKey.currentState.validate() ?
+                        _.loginWithEmail(email: _email.value.text, password: _password.value.text) :
+                        _.btnController.stop(),
                     ),
                   ),
 

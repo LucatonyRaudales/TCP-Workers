@@ -112,8 +112,8 @@ class SignUpPage extends StatelessWidget {
                 password: password.value.text,
                 btnCtrl: btnController
               ) : btnController.stop(),
-                        ),
-                      ),
+            ),
+          ),
             
         ],)
     );

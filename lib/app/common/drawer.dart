@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tcp_workers/app/common/select.dart';
+import 'package:tcp_workers/app/views/Job/add_new_job/newJob_page.dart';
 
 class DrawerItem extends StatelessWidget {
   @override
@@ -32,25 +34,18 @@ class DrawerItem extends StatelessWidget {
             ),
 
             SizedBox(height: 15.ssp),
-            new Text('New Job'.toUpperCase(), style: subTitleFont),
-            
+
             SizedBox(height: 15.ssp),
             _drawerItem(
-              function: ()=> print('new user'),
-              icon:  CupertinoIcons.time_solid,
-              text: 'For hour'
-            ),
-            SizedBox(height: 15.ssp),
-            _drawerItem(
-              function: ()=> print('new Customer'),
+              function: ()=> Get.to(NewJobPage()),
               icon:  CupertinoIcons.cloud_sun_fill,
-              text: 'For day'
+              text: 'New job'
             ),
 
           ]
         ),
             _drawerItem(
-              function: ()=> print('logout'),
+              function: ()=> Get.to(MySelect()),
               icon:  CupertinoIcons.escape,
               text: 'Logout'
             ),

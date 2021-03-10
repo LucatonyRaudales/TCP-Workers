@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
+import 'package:tcp_workers/app/Style/text.dart';
 
 
 // ignore: must_be_immutable
@@ -13,6 +15,8 @@ class Input extends StatefulWidget {
   String Function(String) validator;
   String initialValue;
   void Function(String) onChanged;
+  int maxLines;
+  double width;
   Input({
     Key key, 
     @required this.hintText, 
@@ -22,7 +26,9 @@ class Input extends StatefulWidget {
     this.onChanged,
     this.obscureText,
     this.validator,
-    this.initialValue
+    this.initialValue,
+    this.width,
+    this.maxLines
     }) : super(key: key);
   @override
   _InputState createState() => _InputState();
@@ -32,8 +38,9 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 380.sp,
+      width: widget.width ?? 380.sp,
       child:TextFormField(
+        maxLines: widget.maxLines ?? 1,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: widget.onChanged ,
         validator: widget.validator,
@@ -45,9 +52,9 @@ class _InputState extends State<Input> {
           contentPadding: EdgeInsets.fromLTRB(25.0, 15.0, 25.0, 15.0),
           fillColor: main_color,
           labelText: widget.hintText,
-          labelStyle: TextStyle(color: main_color),
+          labelStyle: bodyFont,
           hintText: widget.hintText,
-          hintStyle: TextStyle(color: main_color),
+          hintStyle: bodyFont,
           prefixIcon: widget.icon  != null ? Icon(widget.icon, color: main_color,) : null,
           focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25.0),

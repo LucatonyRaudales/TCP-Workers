@@ -27,4 +27,11 @@ class Validations{
     }
     return null;
   }
+
+  static String validateSalary(String value) {
+    if (value.length < 1) {
+      return 'Salary is required';
+    }
+    return null;
+  }
 }
