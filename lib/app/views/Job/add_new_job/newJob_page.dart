@@ -10,7 +10,6 @@ import 'package:tcp_workers/app/common/textFormField.dart';
 import 'package:tcp_workers/app/common/validations.dart';
 import 'package:tcp_workers/app/views/Job/add_new_job/new_job_controller.dart';
 
-
 class NewJobPage extends StatefulWidget {
   @override
   _NewJobPageState createState() => _NewJobPageState();

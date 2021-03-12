@@ -1,26 +1,20 @@
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'dart:convert';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:tcp_workers/app/common/variables.dart';
+import '../signIn/user_model.dart';
 
-class HomeCtrl extends GetxController{
-  @override
-  void onInit() {
-    print('welcome to home');
-    super.onInit();
-  }
+class HomeCtrl{
+  final box = GetStorage();
 
-  void getDataHomePage()async{
+  Future<dynamic> getDataHomePage()async{
     try{
-      var response = await http.get(GlobalVariables.api +'');
-      switch (response.statusCode) {
-        case 200:
-          print('abuebp');
-        break;
-        default:
-          print('asaber que pedo');
-      }
+      var decode = json.decode(box.read('userData'));
+      UserModel user = UserModel.fromJson(decode);
+      var response = await http.get(GlobalVariables.api +'/worker/dashboardData/' + user.user.id);
+      return json.decode(response.body);
     }catch(err){
-      print(err);
+      print('Errorase + $err');
     }
   }
 }

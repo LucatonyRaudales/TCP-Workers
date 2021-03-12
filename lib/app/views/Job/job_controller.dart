@@ -6,4 +6,12 @@ class JobCtrl extends GetxController{
     print('job controller');
     super.onInit();
   }
+
+  void getJobData()async{
+    try{
+
+    }catch(err){
+      print(err);
+    }
+  }
 }

@@ -7,7 +7,7 @@ import 'package:tcp_workers/app/Style/text.dart';
 
 class HomeCard extends StatelessWidget {
   final String text;
-  final String number;
+  final int number;
   final IconData icon;
   final Function function;
   HomeCard({
@@ -36,13 +36,12 @@ class HomeCard extends StatelessWidget {
                 ],
         ),
         child: new Column(children: [
-
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children:[
             Spacer(flex: 3,),
 
-            new Text(number, style:  TextStyle(fontSize:20.sp, color: second_color ),),
+            new Text(number.toString(), style:  TextStyle(fontSize:20.sp, color: second_color ),),
             Spacer(),
             new Text(text, style: titleFont),
             Spacer(flex: 4),

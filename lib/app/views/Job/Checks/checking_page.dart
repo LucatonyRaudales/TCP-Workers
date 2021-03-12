@@ -10,21 +10,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class CheckinPage extends StatelessWidget {
-  final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
-  final String jobName;
-  CheckinPage({
-  @required this.jobName
+class CheckinPage extends StatefulWidget {
+    final String jobName;
+    CheckinPage({
+  @required this.jobName,
   });
+  @override
+  _CheckinPageState createState() => _CheckinPageState();
+}
+
+class _CheckinPageState extends State<CheckinPage> {
+  TimeRange range = TimeRange(startTime: TimeOfDay(hour: 00, minute: 00), endTime: TimeOfDay(hour: 00, minute: 00));
 
   @override
   Widget build(BuildContext context) {
   return GetBuilder<CheckingCtrl>(
+    init: CheckingCtrl(),
     builder: (_)=> Scaffold(
     appBar: AppBar(
       title:new Column(
       children:[
-      Text(jobName.toUpperCase(), style: subTitleWhiteFont),
+      Text(widget.jobName.toUpperCase(), style: subTitleWhiteFont),
       SizedBox(height: 3,),
       Text('Techno Business Worker', style:minimalWhiteFont),
       ]),
@@ -35,8 +41,13 @@ class CheckinPage extends StatelessWidget {
     body: Center(
       child: SingleChildScrollView(
       child: new Column(children: [
-
-      SizedBox(height: 3.sp),
+        new Column(
+          children: [
+            Obx(() => Text(_.hourWorked.value.toString(), style: titleFont)),
+            new Text(' hours worked', style: titleFont),
+          ],
+        ),
+      SizedBox(height: 10.sp),
       _checkIn(ctrl: _, context: context),
       ],),
       ),
@@ -54,26 +65,27 @@ class CheckinPage extends StatelessWidget {
     SizedBox(height: 45.sp),
 
     InkWell(
-    onTap:()async {
-      TimeRange result = await showTimeRangePicker(
-        start: TimeOfDay(hour: 7, minute: 0),
-        end: TimeOfDay(hour: 17, minute: 0),
-				interval: Duration(minutes: 30),
-        context: context,
-        );
-        print(result.startTime.format(context));
-    },
-    child: Card(
-      child: new ListTile(
-        title: new Text('Select hours worked', style: titleFont, textAlign: TextAlign.center,),
-        trailing: new Icon(Icons.touch_app, color: main_color),
-      ),
-      ),
-  ),
+      onTap:()async {
+        TimeRange data = await showTimeRangePicker(
+          start: TimeOfDay(hour: 7, minute: 0),
+          end: TimeOfDay(hour: 17, minute: 0),
+          interval: Duration(minutes: 30),
+          context: context,
+          );
+          setState(()=> range = data);
+          ctrl.calculateHoursWorked(time: range);
+      },
+      child: Card(
+        child: new ListTile(
+          title: new Text('select check-in and check-out time', style: subTitleFont, textAlign: TextAlign.center,),
+          trailing: new Icon(Icons.touch_app, color: main_color),
+        ),
+        ),
+    ),
 
   SizedBox(height: 20,),
 
-  _timeSelect(),
+  _timeSelect(ctrl: ctrl),
 
     SizedBox(height: 50.sp),
 
@@ -81,20 +93,20 @@ class CheckinPage extends StatelessWidget {
       color: main_color,
       errorColor: second_color,
       child: Text('Check today'.toUpperCase(), style: TextStyle(color: Colors.white)),
-      controller: btnController,
-      onPressed:()=> print('holas'),
+      controller: ctrl.btnController,
+      onPressed:()=> ctrl.setCheck(),
     )
   ]);
   }
 
-  Widget dataColumn(){
+  Widget dataColumn({CheckingCtrl ctrl}){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children:[
-          new Text('11:00 AM', style: titleFont),
+          new Text(range.startTime.format(context), style: titleFont),
           new Text('In', style: subTitleFont)
         ]),
 
@@ -105,22 +117,39 @@ class CheckinPage extends StatelessWidget {
         ),
 
         Column(children:[
-          new Text('06:30 PM', style: titleFont),
+          new Text(range.endTime.format(context), style: titleFont),
           new Text('Out', style: subTitleFont)
         ])
       ],
     );
   }
 
-    Widget _timeSelect(){
-    return NumberPicker.integer(
-      step: 15,
-      textStyle: bodyFont,
-      scrollDirection: Axis.horizontal,
-      initialValue: 0,
-      minValue: 0,
-      maxValue: 105,
-      onChanged: (newValue) => print(newValue),
-      );
+    Widget _timeSelect({CheckingCtrl ctrl}){
+    return new Container(
+      child: Card(
+        child: ListTile(
+          subtitle: new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            new Text('Lunch minutes', style: bodyFontBold,),
+            SizedBox(width: 10.sp),
+            new Icon(CupertinoIcons.hand_draw, size: 15.sp, color: main_color)
+          ],),
+          title: Obx(()=> NumberPicker(
+          step: 15,
+          textStyle: titleFont,
+          axis: Axis.horizontal,
+          value: ctrl.breakTime.value,
+          minValue: 0,
+          maxValue: 90,
+          onChanged: (newValue)async{
+            ctrl.breakTime.value = newValue;
+            ctrl.calculateHoursWorked(time: range);
+            },
+          )
+        ),
+        )
+      )
+    );
   }
 }

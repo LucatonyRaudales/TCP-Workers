@@ -7,7 +7,7 @@ import 'Colors.dart';
 var titleFont = TextStyle(fontSize:20.sp, color: main_color );
 var titleWhiteFont = TextStyle(fontSize:20.sp, color: quarter_color );
 var subTitleFont = TextStyle(fontSize:15.sp, color: main_color );
-var subTitleFontBold = TextStyle(fontSize:15.sp, color: main_color );
+var subTitleFontBold = TextStyle(fontSize:15.sp, color: main_color, fontWeight: FontWeight.bold );
 var subTitleWhiteFont = TextStyle(fontSize:15.sp, color: Colors.white, fontWeight: FontWeight.bold);
 var subTitleWhiteFontBold = TextStyle(fontSize:15.sp, color: Colors.white, fontWeight: FontWeight.bold);
 var bodyFont = TextStyle(fontSize: 12.sp, color: main_color);

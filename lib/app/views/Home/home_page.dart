@@ -2,12 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/appbar.dart';
 import 'package:tcp_workers/app/common/drawer.dart';
 import 'package:tcp_workers/app/common/home_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tcp_workers/app/common/progressBar.dart';
 import 'package:tcp_workers/app/views/Job/Job_page.dart';
+import 'package:tcp_workers/app/views/Job/my_jobs/jobList_page.dart';
+import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
+
+import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,41 +22,63 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+    final box = GetStorage();
+  void logout()async{
+    await box.erase();
+    Get.off(SplashPage(), transition: Transition.fade);
+  }
   @override
   Widget build(BuildContext context) {
-    return GetBuilder(
-      builder: (_)=> Scaffold(
-        appBar: MyAppBar(),
+    return Scaffold(
+        appBar: MyAppBar(
+          actions: [
+        new IconButton(
+          icon: Icon(CupertinoIcons.square_arrow_right), onPressed: ()=> ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: main_color,
+            content: const Text('Sure you want to log out?', ),
+            action: SnackBarAction(onPressed: ()=> logout(), label: 'Yes!', textColor: Colors.white,),
+            ),
+          ))
+      ],
+        ),
         drawer: DrawerItem(),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 20),
-            child: new Column(
-              children: [
-              HomeCard(
-                text: 'My jobs',
-                icon: CupertinoIcons.hammer_fill,
-                number: 2.toString(),
-                function: ()=> Get.to(JobPage()),
-              ),
+        body: FutureBuilder<dynamic>(
+          future: HomeCtrl().getDataHomePage(),
+          builder:(context, snapshot){
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 20),
+                    child: new Column(
+                      children: [
+                      HomeCard(
+                        text: 'My jobs',
+                        icon: CupertinoIcons.hammer_fill,
+                        number: snapshot.data['myJobs'],
+                        function: ()=> Get.to(JobsListPage()),
+                      ),
 
-              SizedBox(height: 20.sp),
+                      SizedBox(height: 20.sp),
 
-              HomeCard(
-                text: 'History',
-                icon: CupertinoIcons.time,
-                number: 10.toString(),
-                function: ()=> Get.to(JobPage()),
-              ),
+                      HomeCard(
+                        text: 'History',
+                        icon: CupertinoIcons.time,
+                        number: snapshot.data['history'],
+                        function: ()=> Get.to(JobPage()),
+                      ),
 
-              SizedBox(height: 20.sp,),
+                      SizedBox(height: 20.sp,),
 
-              tasks()
-              ],
-            )
-          )
-        )
-      )
+                      tasks()
+                      ],
+                    )
+                  )
+                );
+        }
+        return MyProgressBar();
+          },
+        ) 
     );
   }
 
