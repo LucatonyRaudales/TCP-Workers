@@ -14,27 +14,28 @@ class JobPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<JobCtrl>(
+      init: JobCtrl(),
       builder: (ctrl)=> Scaffold(
         appBar: MyAppBar(),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 25.ssp),
             child: new Column(children: [
-              dataView(),
-              _buttonCards()
+              dataView(ctrl: ctrl),
+              _buttonCards(ctrl: ctrl)
             ],),
           ),
         )
       ));
   }
 
-  Widget dataView(){
+  Widget dataView({JobCtrl ctrl}){
     return new Container(
       width: Get.width,
       height: 220.sp,
       child: Column(
         children: [
-          new Text('Harbor point'.toUpperCase(), style: titleFont),
+          new Text(ctrl.jobData.name.toUpperCase(), style: titleFont),
           SizedBox(height: 10.sp,),
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -42,7 +43,7 @@ class JobPage extends StatelessWidget {
 
             new Text('Orlando, Florida', style: subTitleFont),
 
-            new Text('By Hours', style: subTitleFont),
+            new Text('By ' + ctrl.jobData.type, style: subTitleFont),
           ],),
 
 
@@ -54,10 +55,10 @@ class JobPage extends StatelessWidget {
         ),
 
         dataColumn(
-          data1: '15', 
+          data1: ctrl.jobData.salary.toString(), 
           title1: 'Salary', 
           money1: true,
-          data2: '30', 
+          data2: (ctrl.jobData.salary * 1.5).toString(), 
           title2: 'Overtime', 
           money2: true,
         ),
@@ -108,11 +109,11 @@ class JobPage extends StatelessWidget {
       );
   }
 
-  _buttonCards(){
+  _buttonCards({JobCtrl ctrl}){
     return Column(
       children: [ 
         InkWell(
-          onTap: ()=> Get.to(CheckinPage(jobName: 'Restore One'), transition: Transition.zoom),
+          onTap: ()=> Get.to(CheckinPage(), transition: Transition.zoom, arguments: ctrl.jobData),
           child: Card(
             child: ListTile(
               leading: new Icon(CupertinoIcons.checkmark_rectangle),

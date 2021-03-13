@@ -5,16 +5,13 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:time_range_picker/time_range_picker.dart';
+import '../../../common/progressBar.dart';
 import 'checking_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class CheckinPage extends StatefulWidget {
-    final String jobName;
-    CheckinPage({
-  @required this.jobName,
-  });
   @override
   _CheckinPageState createState() => _CheckinPageState();
 }
@@ -30,7 +27,7 @@ class _CheckinPageState extends State<CheckinPage> {
     appBar: AppBar(
       title:new Column(
       children:[
-      Text(widget.jobName.toUpperCase(), style: subTitleWhiteFont),
+      Text(_.jobData.name.toUpperCase(), style: subTitleWhiteFont),
       SizedBox(height: 3,),
       Text('Techno Business Worker', style:minimalWhiteFont),
       ]),
@@ -38,30 +35,36 @@ class _CheckinPageState extends State<CheckinPage> {
       backgroundColor: main_color,
       primary: true,
       ),
-    body: Center(
+    body: Obx(() => _.isVerifying.value ? MyProgressBar() : Center(
       child: SingleChildScrollView(
-      child: new Column(children: [
-        new Column(
-          children: [
-            Obx(() => Text(_.hourWorked.value.toString(), style: titleFont)),
-            new Text(' hours worked', style: titleFont),
-          ],
+        child: _checkIn(ctrl: _, context: context),
         ),
-      SizedBox(height: 10.sp),
-      _checkIn(ctrl: _, context: context),
-      ],),
       ),
     ),
-    ),
+    )
   );
   }
 
   _checkIn({CheckingCtrl ctrl, BuildContext context}){
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children:[
+      new Column(
+        children: [
+          Obx(() => Text(ctrl.hourWorked.value.toString(), style: titleFont)),
+          new Text('hours worked', style: titleFont),
+        ],
+      ),
+
     dataColumn(),
-    
+
+      new Column(
+        children: [
+          Obx(() => Text( ctrl.payment.value.toString(), style: titleFont)),
+          new Text('payment (\$)', style: titleFont),
+        ],
+      ),
+
     SizedBox(height: 45.sp),
 
     InkWell(
@@ -91,10 +94,11 @@ class _CheckinPageState extends State<CheckinPage> {
 
     RoundedLoadingButton(
       color: main_color,
-      errorColor: second_color,
+      errorColor: Colors.red,
+      successColor: Colors.green,
       child: Text('Check today'.toUpperCase(), style: TextStyle(color: Colors.white)),
       controller: ctrl.btnController,
-      onPressed:()=> ctrl.setCheck(),
+      onPressed:()=> ctrl.setCheck(time: range),
     )
   ]);
   }
