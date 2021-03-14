@@ -9,7 +9,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-import '../my_jobs/jobs_model.dart';
+import '../../my_jobs/jobs_model.dart';
 
 class CheckingCtrl extends GetxController{
   Job jobData = Get.arguments;

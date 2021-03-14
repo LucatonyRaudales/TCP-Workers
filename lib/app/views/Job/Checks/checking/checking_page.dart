@@ -5,8 +5,8 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-import '../../../common/progressBar.dart';
-import 'checking_controller.dart';
+import '../../../../common/progressBar.dart';
+import '../checking/checking_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -75,8 +75,10 @@ class _CheckinPageState extends State<CheckinPage> {
           interval: Duration(minutes: 30),
           context: context,
           );
-          setState(()=> range = data);
-          ctrl.calculateHoursWorked(time: range);
+          if(data != null){
+            setState(()=> range = data);
+            ctrl.calculateHoursWorked(time: range);
+          }
       },
       child: Card(
         child: new ListTile(
