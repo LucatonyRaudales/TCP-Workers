@@ -5,8 +5,10 @@ import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
+  final String title;
   MyAppBar({
-    this.actions
+    this.actions,
+    this.title
   });
 
   @override
@@ -16,8 +18,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return  AppBar(
       title: new Column(children:[
-        Text('Techno contructions +'.toUpperCase(), style: subTitleWhiteFont),
-        Text('by Techno Business Plus', style:minimalWhiteFont)
+        Text(title ??'Techno contructions +'.toUpperCase(), style: subTitleWhiteFont),
+        Text(title != null ? 'Workers' : 'by Techno Business Plus', style:minimalWhiteFont)
       ]),
       centerTitle: true,
       backgroundColor: main_color,

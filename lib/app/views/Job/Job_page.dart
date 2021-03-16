@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tcp_workers/app/views/Job/summary/summary_page.dart';
 import 'Checks/check_management/check_manage_page.dart';
 import 'Checks/checking/checking_page.dart';
 import 'job_controller.dart';
@@ -135,13 +136,16 @@ class JobPage extends StatelessWidget {
           )
         ),
 
-        Card(
-          child: ListTile(
-            leading: new Icon(CupertinoIcons.checkmark_rectangle),
-            title: new Text('Summary', style: subTitleFont,),
-            trailing: new Icon(CupertinoIcons.chevron_right),
+        InkWell(
+          onTap: ()=> Get.to(SummaryPage(), transition: Transition.zoom, arguments: ctrl.jobData),
+          child: Card(
+            child: ListTile(
+              leading: new Icon(CupertinoIcons.checkmark_rectangle),
+              title: new Text('Summary', style: subTitleFont,),
+              trailing: new Icon(CupertinoIcons.chevron_right),
+            ),
           ),
-        ),
+        )
       ],
     );
   }
