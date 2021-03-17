@@ -39,7 +39,7 @@ class NewJobCtrl extends GetxController{
           case 200:
             btnController.success();
             MySnackBar.show(title: 'Success!', message: 'The job has been added successfully!!', backgroundColor: Colors.green, icon: CupertinoIcons.checkmark_alt_circle);
-            Timer(Duration(seconds: 3), ()=> Get.off(HomePage()));
+            Timer(Duration(seconds: 3), ()=> Get.offAll(HomePage()));
           break;
           case 500:
             btnController.error();

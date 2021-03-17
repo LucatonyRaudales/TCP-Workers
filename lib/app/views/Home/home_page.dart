@@ -10,7 +10,6 @@ import 'package:tcp_workers/app/common/drawer.dart';
 import 'package:tcp_workers/app/common/home_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tcp_workers/app/common/progressBar.dart';
-import 'package:tcp_workers/app/views/Job/Job_page.dart';
 import 'package:tcp_workers/app/views/Job/my_jobs/jobList_page.dart';
 import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 
@@ -56,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                         text: 'My jobs',
                         icon: CupertinoIcons.hammer_fill,
                         number: snapshot.data['myJobs'],
-                        function: ()=> Get.to(JobsListPage()),
+                        function: ()=> Get.to(JobsListPage(), arguments: 'active'),
                       ),
 
                       SizedBox(height: 20.sp),
@@ -65,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                         text: 'History',
                         icon: CupertinoIcons.time,
                         number: snapshot.data['history'],
-                        function: ()=> Get.to(JobPage()),
+                        function: ()=> Get.to(JobsListPage(), arguments: 'finished'),
                       ),
 
                       SizedBox(height: 20.sp,),

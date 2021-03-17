@@ -16,7 +16,7 @@ class LoginCtrl extends GetxController{
 
   void loginWithEmail({String email, String password})async{
     try{
-      var response = await http.post(GlobalVariables.api + '/signIn/Email',
+      var response = await http.post(GlobalVariables.api + '/worker/login',
       body: {
         'email': email,
         'password': password,
@@ -26,7 +26,7 @@ class LoginCtrl extends GetxController{
         case 200:
           btnController.success();
           await box.write('userData', response.body);
-          Timer(Duration(seconds: 2), ()=> Get.off(HomePage()));
+          Timer(Duration(seconds: 2), ()=> Get.offAll(HomePage()));
         break;
         case 500:
           btnController.error();

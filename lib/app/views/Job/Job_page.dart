@@ -1,7 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,11 +18,37 @@ class JobPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GetBuilder<JobCtrl>(
       init: JobCtrl(),
       builder: (ctrl)=> Scaffold(
-        appBar: MyAppBar(),
-        body: SingleChildScrollView(
+        appBar: MyAppBar(actions: [
+          PopupMenuButton(
+                color: Colors.white,
+                elevation: 20,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                onSelected: (value) {
+                  print(value);
+                  value == 1 ? 
+                  ctrl.showButton.value = true :  
+                  ctrl.showButton.value = false;
+                },
+                itemBuilder:(context) => [
+                  PopupMenuItem(
+                    enabled: !ctrl.showButton.value,
+                    child: Text("Mark as finished", style: subTitleFont,),
+                    value: 1,
+                  ),
+                  PopupMenuItem(
+                    enabled: ctrl.showButton.value,
+                    child: Text("Cancel", style: subTitleFont,),
+                    value: 2,
+                  ),
+                ]
+            )
+      //new IconButton(icon: Icon(CupertinoIcons.checkmark_seal), onPressed: ()=>  ctrl.markAsFinished())
+    ]),
+        body:SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 25.ssp),
             child: new Column(children: [
@@ -27,16 +56,17 @@ class JobPage extends StatelessWidget {
               _buttonCards(ctrl: ctrl)
             ],),
           ),
-        )
-      ));
+        ))
+      );
   }
 
   Widget dataView({JobCtrl ctrl}){
     return new Container(
       width: Get.width,
-      height: 220.sp,
       child: Column(
         children: [
+          Icon(ctrl.jobData.type == 'day' ? CupertinoIcons.sun_dust : CupertinoIcons.clock , color: main_color, size: 55.sp),
+          SizedBox(height: 20.sp,),
           new Text(ctrl.jobData.name.toUpperCase(), style: titleFont),
           SizedBox(height: 10.sp,),
           new Row(
@@ -117,6 +147,8 @@ class JobPage extends StatelessWidget {
         InkWell(
           onTap: ()=> Get.to(CheckinPage(), transition: Transition.zoom, arguments: ctrl.jobData),
           child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
             child: ListTile(
               leading: new Icon(CupertinoIcons.checkmark_rectangle),
               title: new Text('Check entry and exit', style: subTitleFont,),
@@ -125,26 +157,50 @@ class JobPage extends StatelessWidget {
           )
         ),
 
+        SizedBox(height: 5.sp,),
+
         InkWell(
           onTap: ()=> Get.to(CheckManagementPage(), transition: Transition.zoom, arguments: ctrl.jobData),
           child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
             child: ListTile(
-              leading: new Icon(CupertinoIcons.checkmark_rectangle),
+              leading: new Icon(CupertinoIcons.gear_alt),
               title: new Text('Check management', style: subTitleFont,),
               trailing: new Icon(CupertinoIcons.chevron_right),
             ),
           )
         ),
 
+        SizedBox(height: 5.sp,),
+
         InkWell(
           onTap: ()=> Get.to(SummaryPage(), transition: Transition.zoom, arguments: ctrl.jobData),
           child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
             child: ListTile(
-              leading: new Icon(CupertinoIcons.checkmark_rectangle),
+              leading: new Icon(CupertinoIcons.calendar),
               title: new Text('Summary', style: subTitleFont,),
               trailing: new Icon(CupertinoIcons.chevron_right),
             ),
           ),
+        ),
+
+        SizedBox(height: 25.sp,),
+
+        Obx(() =>ctrl.showButton.value ?
+        FadeInUp(
+          child:RoundedLoadingButton(
+            color: Colors.red,
+            errorColor: Colors.red,
+            successColor: Colors.green,
+            child: Text('Yes!, I want to mark the job as finished.', style: TextStyle(color: Colors.white)),
+            controller: ctrl.btnController,
+            onPressed:()=> ctrl.markAsFinished(),
+          )
+        )
+        : SizedBox(height:5)
         )
       ],
     );

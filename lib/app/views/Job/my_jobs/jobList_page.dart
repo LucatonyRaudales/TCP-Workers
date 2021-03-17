@@ -17,9 +17,11 @@ class JobsListPage extends StatelessWidget {
     return Scaffold(
       appBar: MyAppBar(
         actions: [
+          JobsListCtrl().status == 'active' ?
           new IconButton(
             icon: Icon(CupertinoIcons.add), onPressed: ()=> Get.to(NewJobPage(), transition: Transition.zoom)
           )
+          : SizedBox()
         ],
       ),
       body:FutureBuilder<List<Job>>(
@@ -27,12 +29,22 @@ class JobsListPage extends StatelessWidget {
         builder:(context, snapshot){
           if(snapshot.hasData){
           List<Job> listData = snapshot.data;
-            return new ListView.builder(
+            
+            return listData.length > 0 ? new ListView.builder(
                 itemCount: listData.length,
                 itemBuilder: (context, index){
                   return jobCard(job: listData[index]);
                 },
-            );
+            ) :
+            JobsListCtrl().status == 'active' ? 
+            Center(
+              child: new Text('press the (+) icon to add a new job', style: titleFont)
+            )
+            :
+            Center(
+              child: new Text('No data to display...paddingOnly()', style: titleFont)
+            )
+            ;
           }
           return Center(
             child: MyProgressBar(),
@@ -46,7 +58,7 @@ class JobsListPage extends StatelessWidget {
     return new InkWell(
       onTap: ()=> Get.to(JobPage(), transition: Transition.rightToLeftWithFade, arguments: job),
       child: new Card(
-        margin: EdgeInsets.symmetric(vertical: 5.sp, horizontal: 5.sp),
+        margin: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 5.sp),
         elevation: 4,
         child: ListTile(
           leading: CircleAvatar(
@@ -56,7 +68,7 @@ class JobsListPage extends StatelessWidget {
           ),
           title: new Text(job.name, style: titleFont,),
           subtitle: new Text('By: ' + job.type, style: subTitleFontBold,),
-          trailing: new Icon(Icons.arrow_forward_ios, size: 25.sp, color: main_color),
+          trailing: new Icon(CupertinoIcons.chevron_right),
         ),
       )
     );

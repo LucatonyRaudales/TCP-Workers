@@ -75,6 +75,7 @@ class _SignInPageState extends State<SignInPage> {
                     icon: Icons.vpn_key_rounded, 
                     controller: _password,
                     textInputType: TextInputType.emailAddress,
+                    validator: Validations.validatePassword,
                     obscureText: true,
                   ),
 
