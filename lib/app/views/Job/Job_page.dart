@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tcp_workers/app/views/Job/summary/summary_page.dart';
 import 'Checks/check_management/check_manage_page.dart';
 import 'Checks/checking/checking_page.dart';
+import 'edit_job/edit_page.dart';
 import 'job_controller.dart';
 
 class JobPage extends StatelessWidget {
@@ -29,21 +30,45 @@ class JobPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 onSelected: (value) {
                   print(value);
-                  value == 1 ? 
-                  ctrl.showButton.value = true :  
-                  ctrl.showButton.value = false;
+                  switch(value){
+                    case 0:
+                    Get.to(EditJobPage(), arguments: ctrl.jobData, transition: Transition.rightToLeftWithFade);
+                    break;
+                    case 1:
+                      ctrl.showButton.value = true;
+                    break;
+                    case 2:
+                      ctrl.showButton.value = false;
+                    break;
+                    default:
+                    print('sepa mi ciela $value');
+                  }
                 },
-                itemBuilder:(context) => [
+                itemBuilder:(context) =>  [
+                  PopupMenuItem(
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text("Edit", style: subTitleFont,), Icon(CupertinoIcons.pencil, color: main_color, size: 25.sp,),],),
+                    value: 0,
+                  ),
+
+                  ctrl.jobData.status == 'active' ?
                   PopupMenuItem(
                     enabled: !ctrl.showButton.value,
-                    child: Text("Mark as finished", style: subTitleFont,),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text("Mark as finished", style: subTitleFont,), Icon(CupertinoIcons.tag, color: main_color, size: 25.sp,),],),
                     value: 1,
-                  ),
+                  ) : null,
+
+                  ctrl.jobData.status == 'active' ?
                   PopupMenuItem(
                     enabled: ctrl.showButton.value,
-                    child: Text("Cancel", style: subTitleFont,),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [Text("Cancel", style: subTitleFont,), Icon(CupertinoIcons.xmark, color: main_color, size: 25.sp,),],),
                     value: 2,
-                  ),
+                  ) : null,
                 ]
             )
       //new IconButton(icon: Icon(CupertinoIcons.checkmark_seal), onPressed: ()=>  ctrl.markAsFinished())
@@ -73,7 +98,7 @@ class JobPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
 
-            new Text('Orlando, Florida', style: subTitleFont),
+            new Text('${ctrl.jobData.address.city}, ${ctrl.jobData.address.state}', style: subTitleFont),
 
             new Text('By ' + ctrl.jobData.type, style: subTitleFont),
           ],),
@@ -144,34 +169,12 @@ class JobPage extends StatelessWidget {
   _buttonCards({JobCtrl ctrl}){
     return Column(
       children: [ 
-        InkWell(
-          onTap: ()=> Get.to(CheckinPage(), transition: Transition.zoom, arguments: ctrl.jobData),
-          child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 5,
-            child: ListTile(
-              leading: new Icon(CupertinoIcons.checkmark_rectangle),
-              title: new Text('Check entry and exit', style: subTitleFont,),
-              trailing: new Icon(CupertinoIcons.chevron_right),
-            ),
-          )
-        ),
 
-        SizedBox(height: 5.sp,),
-
-        InkWell(
-          onTap: ()=> Get.to(CheckManagementPage(), transition: Transition.zoom, arguments: ctrl.jobData),
-          child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 5,
-            child: ListTile(
-              leading: new Icon(CupertinoIcons.gear_alt),
-              title: new Text('Check management', style: subTitleFont,),
-              trailing: new Icon(CupertinoIcons.chevron_right),
-            ),
-          )
-        ),
-
+        ctrl.jobData.status == 'active' ?
+        checksOptions(ctrl: ctrl)
+        : 
+        new Text('This job has been marked as finished', style: subTitleFontBold),
+        
         SizedBox(height: 5.sp,),
 
         InkWell(
@@ -202,6 +205,40 @@ class JobPage extends StatelessWidget {
         )
         : SizedBox(height:5)
         )
+      ],
+    );
+  }
+
+  Widget checksOptions({JobCtrl ctrl}){
+    return Column(
+      children: [
+        InkWell(
+          onTap: ()=> Get.to(CheckinPage(), transition: Transition.zoom, arguments: ctrl.jobData),
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
+            child: ListTile(
+              leading: new Icon(CupertinoIcons.checkmark_rectangle),
+              title: new Text('Check entry and exit', style: subTitleFont,),
+              trailing: new Icon(CupertinoIcons.chevron_right),
+            ),
+          )
+        ),
+
+    SizedBox(height: 5.sp,),
+
+    InkWell(
+      onTap: ()=> Get.to(CheckManagementPage(), transition: Transition.zoom, arguments: ctrl.jobData),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 5,
+        child: ListTile(
+          leading: new Icon(CupertinoIcons.gear_alt),
+          title: new Text('Check management', style: subTitleFont,),
+          trailing: new Icon(CupertinoIcons.chevron_right),
+        ),
+      )
+    )
       ],
     );
   }

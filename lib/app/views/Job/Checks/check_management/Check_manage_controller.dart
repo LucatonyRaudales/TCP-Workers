@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,14 +18,34 @@ class CheckManagementController extends GetxController {
   RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   RxBool fetchingData = true.obs;
   final box = GetStorage();
-  Rx<DateTime> date = DateTime(2000,1,1).obs;
+  DateTime date;
+  Rx<DateTime> dat = DateTime(2000,1,1).obs;
   Job jobData = Get.arguments;
   Check checkData;
+  DateTime dateToday;
 
-  void selectDate()async{
-    print(date.value);
-    if(date.value == DateTime.now()) MySnackBar.show(title: 'Invalid date', message: 'You must select previous dates', backgroundColor: Colors.redAccent, icon: CupertinoIcons.xmark_circle);
-    checkDate();
+  void selectDate()async{var time = DateTime.now();
+    if(date == new DateTime(time.year, time.month, time.day, 0, 0, 0, 0, 0)){
+      MySnackBar.show(title: 'Invalid date', message: 'You must select previous dates', backgroundColor: Colors.redAccent, icon: CupertinoIcons.xmark_circle);
+      dat.value = DateTime(2000,1,1);
+    }else{
+      checkDate();
+    }
+  }
+
+  Future pickDate(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: date ?? initialDate,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime.now(),
+    );
+
+    if (newDate == null) return;
+    dat.value = newDate; 
+    date = newDate;
+    selectDate();
   }
 
   void calculateHoursWorked({TimeRange time}){
@@ -39,7 +58,7 @@ class CheckManagementController extends GetxController {
 
   void checkDate()async{
     try{
-      var response = await http.get(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.value.toIso8601String()}');
+      var response = await http.get(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.toIso8601String()}');
       switch (response.statusCode) {
         case 200:
         CheckManagement check= CheckManagement.fromJson(json.decode(response.body));

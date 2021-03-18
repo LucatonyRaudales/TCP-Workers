@@ -17,7 +17,19 @@ class NewJobCtrl extends GetxController{
   final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   final TextEditingController name = TextEditingController();
   final TextEditingController salary = TextEditingController();
-  final TextEditingController address = TextEditingController();
+  String country;
+  String state;
+  String city;
+
+  void selectCountry(String va){
+    country = va;
+  }
+  void selectState(String va){
+    state = va;
+  }
+  void selectCity(String va){
+    city = va;
+  }
 
   void setNewJob({String type})async{
     if(type == null ){
@@ -32,7 +44,7 @@ class NewJobCtrl extends GetxController{
           'name' : name.text,
           'type': type,
           'salary' : salary.text,
-          'address' : address.text,
+          'address' : json.encode({'state' : state, 'city': city}),
           'user_employee': userData.user.id
         });
         switch (response.statusCode) {
@@ -58,6 +70,5 @@ class NewJobCtrl extends GetxController{
         Timer(Duration(seconds: 3), ()=> btnController.reset());
       }
     }
-    
   }
 }

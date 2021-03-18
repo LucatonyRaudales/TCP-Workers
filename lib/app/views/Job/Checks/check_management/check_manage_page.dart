@@ -10,7 +10,6 @@ import 'package:time_range_picker/time_range_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
-
 import 'Check_manage_controller.dart';
 
 class CheckManagementPage extends StatefulWidget {
@@ -41,30 +40,19 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
       ),
     body: Center(
       child: SingleChildScrollView(
-        child: _.date.value == DateTime(2000,1,1) ? _pickerDate() :  _.fetchingData.value ? MyProgressBar() : _checkIn(ctrl: _, context: context),
+        child: _.dat.value == DateTime(2000,1,1) ? _pickerDate(ctrl: _, context: context) :  _.fetchingData.value ? MyProgressBar() : _checkIn(ctrl: _, context: context),
         ),
       ),
     ),
   );
   }
 
-  Widget _pickerDate({CheckManagementController ctrl}){
+  Widget _pickerDate({CheckManagementController ctrl, BuildContext context}){
     return new Padding(
       padding: EdgeInsets.symmetric(vertical: 7.sp, horizontal: 10.sp),
       child: ElevatedButton(
         child: new Text('Select date', style: subTitleWhiteFont),
-        onPressed:(){
-
-    DatePicker.showDatePicker(context,
-      showTitleActions: true,
-      minTime: DateTime(2010, 1, 1),
-      maxTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1), 
-      onCancel: ()=> Get.back(),
-      onConfirm: (date) {
-        print(date);
-        ctrl.date.value = date;
-      }, currentTime: DateTime.now(), locale: LocaleType.en);
-        }
+        onPressed:()=> ctrl.pickDate(context)
       )
     );
   }

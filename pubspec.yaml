@@ -26,6 +26,7 @@ dependencies:
   flutter_slidable: ^0.5.7
   flutter_launcher_icons: ^0.9.0
   introduction_screen: ^2.0.0
+  csc_picker: ^0.0.5
 
 flutter_icons:
   android: true

@@ -1,3 +1,4 @@
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -18,6 +19,11 @@ class NewJobPage extends StatefulWidget {
 class _NewJobPageState extends State<NewJobPage> {
   List list = ['hour', 'day'];
   String typeSelected;
+  String countryValue = "";
+  String stateValue = "";
+  String cityValue = "";
+  String address = "";
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NewJobCtrl>(
@@ -86,7 +92,7 @@ class _NewJobPageState extends State<NewJobPage> {
             ),
 
             Input(
-              width: 150.sp,
+              width: 100,
               hintText: "Salary", 
               icon: CupertinoIcons.money_dollar, 
               controller: ctrl.salary,
@@ -98,17 +104,20 @@ class _NewJobPageState extends State<NewJobPage> {
 
           new SizedBox(height: 15.sp),
 
-          Input(
-            hintText: "Address", 
-            maxLines: 4,
-            icon: CupertinoIcons.arrow_swap, 
-            controller: ctrl.address,
-            textInputType: TextInputType.text,
-            obscureText: false,
-            validator: Validations.validateName,
-          ),
+          CSCPicker(
+            onCountryChanged: (value) {
+            ctrl.selectCountry(value);
+          },
+            ///triggers once state selected in dropdown
+            onStateChanged: (value) {
+              ctrl.selectState(value);
+            },
 
-          
+            ///triggers once city selected in dropdown
+            onCityChanged: (value) {
+              ctrl.selectCity(value);
+            },
+          ),
 
           Padding(
             padding: EdgeInsets.only(top:25.sp),

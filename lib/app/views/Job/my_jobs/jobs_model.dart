@@ -11,30 +11,61 @@ class JobList{
 }
 
 class Job{
-  String id;
-  String status;
-  String name;
-  String type;
-  int salary;
-  String address;
-
   Job({
-    final this.id,
-    final this.address,
-    final this.name,
-    final this.salary,
-    final this.status,
-    final this.type
-  });
+        this.id,
+        this.status,
+        this.name,
+        this.type,
+        this.salary,
+        this.address,
+    });
 
-  factory Job.fromJson(Map<String, dynamic> json){
-    return Job(
-      id: json['_id'],
-      status: json['status'],
-      name: json['name'],
-      type: json['type'],
-      salary: json['salary'],
-      address: json['address']
+    String id;
+    String status;
+    String name;
+    String type;
+    int salary;
+    Address address;
+
+    factory Job.fromJson(Map<String, dynamic> json) => Job(
+        id: json["_id"],
+        status: json["status"],
+        name: json["name"],
+        type: json["type"],
+        salary: json["salary"],
+        address: json["address"] == null ? null : Address.fromJson(json["address"]),
     );
-  }
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "status": status,
+        "name": name,
+        "type": type,
+        "salary": salary,
+        "address": address.toJson(),
+    };
+}
+
+class Address {
+    Address({
+        this.country,
+        this.state,
+        this.city,
+    });
+
+    String country;
+    String state;
+    String city;
+
+    factory Address.fromJson(Map<String, dynamic> json) => Address(
+        country: json["country"] ?? '',
+        state: json["state"] ?? '',
+        city: json["city"] ?? '',
+    );
+
+    Map<String, dynamic> toJson() => {
+        "country": country,
+        "state": state,
+        "city": city,
+    };
 }

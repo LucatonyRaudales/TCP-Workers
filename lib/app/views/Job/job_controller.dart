@@ -23,6 +23,7 @@ class JobCtrl extends GetxController{
   void onInit() {
     print('job controller');
     print(jobData.name);
+    print(jobData.status);
     super.onInit();
   }
 

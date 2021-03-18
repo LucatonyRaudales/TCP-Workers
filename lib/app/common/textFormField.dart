@@ -38,7 +38,7 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.width ?? 380.sp,
+      width: widget.width ?? Get.width,
       child:TextFormField(
         maxLines: widget.maxLines ?? 1,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -57,17 +57,17 @@ class _InputState extends State<Input> {
           hintStyle: bodyFont,
           prefixIcon: widget.icon  != null ? Icon(widget.icon, color: main_color,) : null,
           focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
               color: second_color,
-              width: 1.w,
+              width: 1.sp,
             ),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
               color: main_color,
-              width: 1.w,
+              width: 1.sp,
             ),
           ),
         )
