@@ -57,18 +57,25 @@ class CheckManagementController extends GetxController {
   double toDouble(TimeOfDay time)=> time.hour + time.minute/60.0;
 
   void checkDate()async{
+    print(date.toIso8601String());
     try{
-      var response = await http.get(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.toIso8601String()}');
+      var response = await http.get(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.toUtc()}');
       switch (response.statusCode) {
         case 200:
         CheckManagement check= CheckManagement.fromJson(json.decode(response.body));
-        checkData = check.check[0];
+        if(check.check.length > 0){
+          fetchingData.value = false;
+          checkData = check.check[0];
+        }else{
+          MySnackBar.show(title: 'The selected day was not checked', message: 'You can do it in the check-up session', backgroundColor: Colors.orange, icon: CupertinoIcons.info);
+          Timer(Duration(seconds:3), ()=>Get.back());
+        } 
           break;
         default:
         print('hubo algo mi perro');
       }
-      fetchingData.value = false;
     }catch(err){
+      print('errorcito');
       print(err);
     }
     update();
@@ -89,7 +96,8 @@ class CheckManagementController extends GetxController {
         'out' : checkData.out.toString(),
         'hours' : checkData.hours.toString(),
         'break_minutes' : checkData.breakMinutes.toString(),
-        'payment' : checkData.payment.toString()
+        'payment' : checkData.payment.toString(),
+        'date' : checkData.date.toString()
       });
       print(response.statusCode);
       switch (response.statusCode) {

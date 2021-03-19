@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:tcp_workers/app/Style/Colors.dart';
-import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
 import 'package:tcp_workers/app/views/Home/home_page.dart';
 import 'my_jobs/jobs_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class JobCtrl extends GetxController{
   Job jobData = Get.arguments;
@@ -21,18 +18,8 @@ class JobCtrl extends GetxController{
 
   @override
   void onInit() {
-    print('job controller');
-    print(jobData.name);
-    print(jobData.status);
+    showButton.value = false;
     super.onInit();
-  }
-
-  void getJobData()async{
-    try{
-
-    }catch(err){
-      print(err);
-    }
   }
 
   void markAsFinished()async{

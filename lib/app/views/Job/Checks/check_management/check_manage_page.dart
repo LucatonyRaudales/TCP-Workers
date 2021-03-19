@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/state_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
@@ -61,6 +62,10 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children:[
+      Text(DateFormat.yMMMMEEEEd().format(ctrl.checkData.date.toLocal()), style: titleFont),
+
+      SizedBox(height: 25.sp),
+
       new Column(
         children: [
           Text(ctrl.checkData.hours.toString(), style: titleFont),
@@ -110,7 +115,7 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
       color: main_color,
       errorColor: Colors.red,
       successColor: Colors.green,
-      child: Text('Check today'.toUpperCase(), style: TextStyle(color: Colors.white)),
+      child: Text('Update check'.toUpperCase(), style: TextStyle(color: Colors.white)),
       controller: ctrl.btnController,
       onPressed:()=> ctrl.updateCheck(),
     )

@@ -29,7 +29,6 @@ class JobPage extends StatelessWidget {
                 elevation: 20,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 onSelected: (value) {
-                  print(value);
                   switch(value){
                     case 0:
                     Get.to(EditJobPage(), arguments: ctrl.jobData, transition: Transition.rightToLeftWithFade);
@@ -54,7 +53,7 @@ class JobPage extends StatelessWidget {
 
                   ctrl.jobData.status == 'active' ?
                   PopupMenuItem(
-                    enabled: !ctrl.showButton.value,
+                    enabled: ctrl.jobData.status == 'active' && ctrl.showButton.value == false,
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [Text("Mark as finished", style: subTitleFont,), Icon(CupertinoIcons.tag, color: main_color, size: 25.sp,),],),

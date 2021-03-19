@@ -1,13 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tcp_workers/app/common/select.dart';
 import 'package:tcp_workers/app/views/Job/add_new_job/newJob_page.dart';
+import 'package:tcp_workers/app/views/signIn/login_controller.dart';
+import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 
-class DrawerItem extends StatelessWidget {
+
+class DrawerItem extends StatefulWidget {
+  @override
+  _DrawerItemState createState() => _DrawerItemState();
+}
+
+class _DrawerItemState extends State<DrawerItem> {
+    final box = GetStorage();
+  User user;
+  void getUserData()async{
+    try {
+      
+      user = User.fromJson(json.decode(box.read('userData')));
+    } catch (e) {
+    }
+  }
+@override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+  void logout()async{
+    await box.erase();
+    Get.off(SplashPage(), transition: Transition.fade);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -22,7 +51,19 @@ class DrawerItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:[ 
 
+            new Column(children: [
             new Text('Techno construction plus'.toUpperCase(), style: titleFont, textAlign: TextAlign.center),
+            SizedBox(height: 30),
+            new Container(
+                  height: 100.sp,
+                  width: 100.sp,
+                  child:  new CircleAvatar(
+                backgroundColor: main_color,
+                child:Icon(CupertinoIcons.person_crop_circle, size: 55.sp, color: Colors.white)
+                )
+              ),
+              new Text(user.user.firstName + ' ' + user.user.lastName, style: titleFont,)
+            ],),
             
             new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +86,7 @@ class DrawerItem extends StatelessWidget {
           ]
         ),
             _drawerItem(
-              function: ()=> Get.to(MySelect()),
+              function: ()=> logout(),
               icon:  CupertinoIcons.escape,
               text: 'Logout'
             ),

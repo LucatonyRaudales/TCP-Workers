@@ -51,7 +51,6 @@ class EditJobCtrl extends GetxController{
         default:
         print('sepa mi ciela hermosa linda');
       }
-      btnController.reset();
     }catch(err){
       print(err);
     }

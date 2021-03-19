@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -50,4 +51,72 @@ class LoginCtrl extends GetxController{
       print(err);
     }
   }
+}
+
+class User {
+    User({
+        this.token,
+        this.user,
+    });
+
+    String token;
+    UserClass user;
+
+    factory User.fromJson(Map<String, dynamic> json) => User(
+        token: json["token"],
+        user: UserClass.fromJson(json["user"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "token": token,
+        "user": user.toJson(),
+    };
+}
+
+class UserClass {
+    UserClass({
+        this.labor,
+        this.workOn,
+        this.address,
+        this.id,
+        this.firstName,
+        this.lastName,
+        this.nickName,
+        this.email,
+        this.v,
+    });
+
+    String labor;
+    List<dynamic> workOn;
+    String address;
+    String id;
+    String firstName;
+    String lastName;
+    String nickName;
+    String email;
+    int v;
+
+    factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(
+        labor: json["labor"],
+        workOn: List<dynamic>.from(json["workOn"].map((x) => x)),
+        address: json["address"],
+        id: json["_id"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        nickName: json["nickName"],
+        email: json["email"],
+        v: json["__v"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "labor": labor,
+        "workOn": List<dynamic>.from(workOn.map((x) => x)),
+        "address": address,
+        "_id": id,
+        "firstName": firstName,
+        "lastName": lastName,
+        "nickName": nickName,
+        "email": email,
+        "__v": v,
+    };
 }
