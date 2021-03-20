@@ -1,6 +1,7 @@
 import 'package:tcp_workers/app/common/variables.dart';
 import 'package:http/http.dart' as http;
-class Validations{
+
+class Validations {
   static String validateemail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -18,11 +19,18 @@ class Validations{
     return null;
   }
 
-  static String validatePassword(String value){
-    if(value.isEmpty){
+  static String validatePhone(String value) {
+    if (value.length < 2) {
+      return 'Phone enter is valid';
+    }
+    return null;
+  }
+
+  static String validatePassword(String value) {
+    if (value.isEmpty) {
       return 'Password is required';
     }
-    if(value.length < 6){
+    if (value.length < 6) {
       return "Password can't be lest than 6 words";
     }
     return null;

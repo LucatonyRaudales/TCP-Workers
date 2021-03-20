@@ -21,90 +21,101 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    final box = GetStorage();
-  void logout()async{
+  final box = GetStorage();
+  void logout() async {
     await box.erase();
     Get.off(SplashPage(), transition: Transition.fade);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(
-          actions: [
-        new IconButton(
-          icon: Icon(CupertinoIcons.square_arrow_right), onPressed: ()=> ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: main_color,
-            content: const Text('Sure you want to log out?', ),
-            action: SnackBarAction(onPressed: ()=> logout(), label: 'Yes!', textColor: Colors.white,),
+      appBar: MyAppBar(
+        actions: [
+          new IconButton(
+            icon: Icon(CupertinoIcons.square_arrow_right),
+            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: main_color,
+                content: const Text(
+                  'Sure you want to log out?',
+                ),
+                action: SnackBarAction(
+                  onPressed: () => logout(),
+                  label: 'Yes!',
+                  textColor: Colors.white,
+                ),
+              ),
             ),
-          ))
-      ],
-        ),
-        drawer: DrawerItem(),
-        body: FutureBuilder<dynamic>(
-          future: HomeCtrl().getDataHomePage(),
-          builder:(context, snapshot){
-            if (snapshot.hasData) {
-              return SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 20),
-                    child: new Column(
-                      children: [
-                      HomeCard(
-                        text: 'My jobs',
-                        icon: CupertinoIcons.hammer_fill,
-                        number: snapshot.data['myJobs'],
-                        function: ()=> Get.to(JobsListPage(), arguments: 'active'),
-                      ),
-
-                      SizedBox(height: 20.sp),
-
-                      HomeCard(
-                        text: 'History',
-                        icon: CupertinoIcons.time,
-                        number: snapshot.data['history'],
-                        function: ()=> Get.to(JobsListPage(), arguments: 'finished'),
-                      ),
-
-                      SizedBox(height: 20.sp,),
-
-                      tasks()
-                      ],
-                    )
-                  )
-                );
-        }
-        return MyProgressBar();
-          },
-        ) 
+          )
+        ],
+      ),
+      drawer: DrawerItem(),
+      body: FutureBuilder<dynamic>(
+        future: HomeCtrl().getDataHomePage(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 20),
+                child: new Column(
+                  children: [
+                    HomeCard(
+                      text: 'My jobs',
+                      icon: CupertinoIcons.hammer_fill,
+                      number: snapshot.data['myJobs'],
+                      function: () =>
+                          Get.to(JobsListPage(), arguments: 'active'),
+                    ),
+                    SizedBox(height: 20.sp),
+                    HomeCard(
+                      text: 'History',
+                      icon: CupertinoIcons.time,
+                      number: snapshot.data['history'],
+                      function: () =>
+                          Get.to(JobsListPage(), arguments: 'finished'),
+                    ),
+                    SizedBox(
+                      height: 20.sp,
+                    ),
+                    tasks()
+                  ],
+                ),
+              ),
+            );
+          }
+          return MyProgressBar();
+        },
+      ),
     );
   }
 
-  tasks(){
+  tasks() {
     return new Container(
       width: Get.width,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(-0.5, .5), //(x,y)
-            blurRadius: 2.0,
-          )
-        ]
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(-0.5, .5), //(x,y)
+              blurRadius: 2.0,
+            )
+          ]),
       child: ExpansionTile(
         leading: new Icon(CupertinoIcons.doc_circle),
-        title: new Text('Tasks', style: titleFont,),
+        title: new Text(
+          'Tasks',
+          style: titleFont,
+        ),
         trailing: new Icon(CupertinoIcons.add_circled_solid),
         backgroundColor: Colors.grey[100],
         children: [
           ListTile(
             leading: new Icon(CupertinoIcons.arrow_right),
             title: new Text('Reunion todos los martes', style: bodyFont),
-            onTap: ()=> print('Reunioncito'),
+            onTap: () => print('Reunioncito'),
             hoverColor: Colors.grey[300],
           )
         ],

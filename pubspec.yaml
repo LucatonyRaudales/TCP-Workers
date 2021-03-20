@@ -27,6 +27,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.0
   introduction_screen: ^2.0.0
   csc_picker: ^0.0.5
+  intl_phone_number_input: ^0.6.0
 
 flutter_icons:
   android: true

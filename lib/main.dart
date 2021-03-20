@@ -15,16 +15,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(360, 690),
-        allowFontScaling: false,
-        builder: () => GetMaterialApp(
+      designSize: Size(360, 690),
+      allowFontScaling: false,
+      builder: () => GetMaterialApp(
         title: 'Techno Construction Workers',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: main_color,
         ),
         home: SplashPage(),
-      )
+      ),
     );
   }
 }

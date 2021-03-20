@@ -9,28 +9,25 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<SplashCtrl>(
       init: SplashCtrl(),
-      builder: (_)=> Scaffold(
+      builder: (_) => Scaffold(
         body: SafeArea(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:[
+            children: [
               SlideInDown(
-                child: Text(
-                  "Techno construction Workers".toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: titleFont
-                ),
+                child: Text("Techno construction Workers".toUpperCase(),
+                    textAlign: TextAlign.center, style: titleFont),
               ),
-
               FadeInLeftBig(
-                child: new Text('by techno construction bussines', 
-                  style: bodyFont,
-                  textAlign: TextAlign.center,
-                )
-              )
-          ])
-        )
+                  child: new Text(
+                'by techno construction bussines',
+                style: bodyFont,
+                textAlign: TextAlign.center,
+              ))
+            ],
+          ),
+        ),
       ),
     );
   }
