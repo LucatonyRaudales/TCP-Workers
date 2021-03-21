@@ -32,7 +32,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/worker.png"
+  image_path: "assets/images/worker2.png"
 
 dev_dependencies:
   flutter_test:
