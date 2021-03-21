@@ -157,7 +157,9 @@ class SignUpPage extends StatelessWidget {
                             backgroundColor: Colors.redAccent,
                             icon: CupertinoIcons.clear_thick)
                     : btnController.stop();
-                btnController.stop();
+                if (!terminos.value) {
+                  btnController.stop();
+                }
               },
             ),
           ),
