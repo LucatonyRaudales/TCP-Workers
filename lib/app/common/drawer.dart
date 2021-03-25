@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tcp_workers/app/views/Home/home_page.dart';
 import 'package:tcp_workers/app/views/Job/add_new_job/newJob_page.dart';
 import 'package:tcp_workers/app/views/signIn/login_controller.dart';
 import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';

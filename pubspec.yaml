@@ -28,6 +28,7 @@ dependencies:
   introduction_screen: ^2.0.0
   csc_picker: ^0.0.5
   intl_phone_number_input: ^0.6.0
+  new_version: ^0.0.5
 
 flutter_icons:
   android: true

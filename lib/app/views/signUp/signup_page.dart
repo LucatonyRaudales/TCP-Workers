@@ -121,6 +121,13 @@ class SignUpPage extends StatelessWidget {
                 text: TextSpan(
                   children: <TextSpan>[
                     TextSpan(
+                      text: "Agree ",
+                      style: TextStyle(
+                        fontSize: 13.ssp,
+                        color: main_color,
+                      ),
+                    ),
+                    TextSpan(
                       text: "Terms and Conditions",
                       style: TextStyle(
                           fontSize: 13.ssp,

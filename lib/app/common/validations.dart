@@ -1,6 +1,3 @@
-import 'package:tcp_workers/app/common/variables.dart';
-import 'package:http/http.dart' as http;
-
 class Validations {
   static String validateemail(String value) {
     Pattern pattern =
@@ -37,6 +34,9 @@ class Validations {
   }
 
   static String validateSalary(String value) {
+    if (value.isEmpty) {
+      return 'Salary is required';
+    }
     if (value.length < 1) {
       return 'Salary is required';
     }

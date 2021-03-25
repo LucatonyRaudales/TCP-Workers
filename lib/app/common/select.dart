@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 
+// ignore: must_be_immutable
 class MySelect extends StatelessWidget {
   final String title = 'dropDown';
   String friendVal;
@@ -10,12 +11,11 @@ class MySelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal:18.0),
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: main_color),
-          borderRadius: BorderRadius.circular(25)
-        ),
+            border: Border.all(color: main_color),
+            borderRadius: BorderRadius.circular(25)),
         child: DropdownButton(
           hint: new Text('Select'),
           dropdownColor: Colors.lightBlue,
@@ -25,10 +25,10 @@ class MySelect extends StatelessWidget {
           iconSize: 30.sp,
           value: friendVal,
           onChanged: (val) => friendVal = val,
-          items: friendName.map((e){
+          items: friendName.map((e) {
             return DropdownMenuItem(
               value: e,
-              child:  new Text(e),
+              child: new Text(e),
             );
           }).toList(),
         ),

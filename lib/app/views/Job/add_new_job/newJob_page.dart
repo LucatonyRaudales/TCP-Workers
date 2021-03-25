@@ -28,7 +28,7 @@ class _NewJobPageState extends State<NewJobPage> {
   Widget build(BuildContext context) {
     return GetBuilder<NewJobCtrl>(
       init: NewJobCtrl(),
-      builder: (_){
+      builder: (_) {
         return Scaffold(
           appBar: MyAppBar(),
           body: new Center(
@@ -42,72 +42,72 @@ class _NewJobPageState extends State<NewJobPage> {
     );
   }
 
-  Widget _form({NewJobCtrl ctrl}){
+  Widget _form({NewJobCtrl ctrl}) {
     var _formKey = GlobalKey<FormState>();
 
     return Form(
       key: _formKey,
-      child: new Column(children: [
-        new Text('new job'.toUpperCase(), style: titleFont,),
-
-        new SizedBox(height: 25.ssp),
-
-        Input(
-            hintText: "Name", 
-            icon: CupertinoIcons.textformat, 
+      child: new Column(
+        children: [
+          new Text(
+            'new job'.toUpperCase(),
+            style: titleFont,
+          ),
+          new SizedBox(height: 25.ssp),
+          Input(
+            hintText: "Name",
+            icon: CupertinoIcons.textformat,
             controller: ctrl.name,
             textInputType: TextInputType.text,
             obscureText: false,
             validator: Validations.validateName,
           ),
-
           new SizedBox(height: 15.sp),
-
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.sp),
-              decoration: BoxDecoration(
-                border: Border.all(color: typeSelected != null ? main_color : Colors.red),
-                borderRadius: BorderRadius.circular(25)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: typeSelected != null ? main_color : Colors.red),
+                    borderRadius: BorderRadius.circular(25)),
+                child: DropdownButton(
+                  hint:
+                      new Text(typeSelected ?? 'Project by: ', style: bodyFont),
+                  dropdownColor: Colors.white,
+                  style: subTitleFont,
+                  elevation: 5,
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: 30.sp,
+                  value: typeSelected,
+                  onChanged: (val) => setState(() => typeSelected = val),
+                  items: list.map((e) {
+                    return DropdownMenuItem(
+                      value: e,
+                      child: new Text(e),
+                    );
+                  }).toList(),
+                ),
               ),
-              child: DropdownButton(
-                hint: new Text(typeSelected ?? 'Project by: ', style: bodyFont) ,
-                dropdownColor: Colors.white,
-                style: subTitleFont,
-                elevation: 5,
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 30.sp,
-                value: typeSelected,
-                onChanged: (val) => setState(()=> typeSelected = val),
-                items: list.map((e){
-                  return DropdownMenuItem(
-                    value: e,
-                    child:  new Text(e),
-                  );
-                }).toList(),
+              Input(
+                width: 150,
+                hintText: "Salary",
+                icon: CupertinoIcons.money_dollar,
+                controller: ctrl.salary,
+                textInputType: TextInputType.number,
+                obscureText: false,
+                validator: Validations.validateSalary,
               ),
-            ),
-
-            Input(
-              width: 100,
-              hintText: "Salary", 
-              icon: CupertinoIcons.money_dollar, 
-              controller: ctrl.salary,
-              textInputType: TextInputType.number,
-              obscureText: false,
-              validator: Validations.validateSalary,
-            ),
-          ],),
-
+            ],
+          ),
           new SizedBox(height: 15.sp),
-
           CSCPicker(
             onCountryChanged: (value) {
-            ctrl.selectCountry(value);
-          },
+              ctrl.selectCountry(value);
+            },
+
             ///triggers once state selected in dropdown
             onStateChanged: (value) {
               ctrl.selectState(value);
@@ -118,19 +118,21 @@ class _NewJobPageState extends State<NewJobPage> {
               ctrl.selectCity(value);
             },
           ),
-
           Padding(
-            padding: EdgeInsets.only(top:25.sp),
+            padding: EdgeInsets.only(top: 25.sp),
             child: RoundedLoadingButton(
               color: main_color,
               errorColor: Colors.red,
               successColor: Colors.green,
               child: Text('Add job', style: TextStyle(color: Colors.white)),
               controller: ctrl.btnController,
-              onPressed:()=> _formKey.currentState.validate() ? ctrl.setNewJob(type: typeSelected) : ctrl.btnController.stop(),
+              onPressed: () => _formKey.currentState.validate()
+                  ? ctrl.setNewJob(type: typeSelected)
+                  : ctrl.btnController.stop(),
             ),
           ),
-      ],),
+        ],
+      ),
     );
   }
 }
