@@ -26,13 +26,13 @@ class SplashCtrl extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    final status = await newVersion.getVersionStatus();
-    print(status.canUpdate);
-    if (status.canUpdate) {
-      showUpdateDialog(status);
-    } else {
-      verifyIsLogin();
-    }
+    // final status = await newVersion.getVersionStatus();
+    // print(status.canUpdate);
+    // if (status.canUpdate) {
+    //   showUpdateDialog(status);
+    // } else {
+    verifyIsLogin();
+    // }
   }
 
   void verifyIsLogin() async {

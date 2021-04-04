@@ -1,44 +1,50 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
-import 'package:tcp_workers/app/views/Home/home_page.dart';
-import 'my_jobs/jobs_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:tcp_workers/app/views/Job/my_jobs/jobs_model.dart';
+import 'package:tcp_workers/app/views/Job/get_pay/get_pay_model.dart';
 
-class JobCtrl extends GetxController {
-  Job jobData = Get.arguments;
+class GetPayCtrl extends GetxController {
   RxBool showButton = false.obs;
+  List<RxBool> statePay = [];
+  Job jobData = Get.arguments;
+  DaystoPay daystoPay = new DaystoPay();
+
   final RoundedLoadingButtonController btnController =
       new RoundedLoadingButtonController();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     showButton.value = false;
+    daystoPay.days = [];
+    await loadingDaytoPay();
+
     super.onInit();
   }
 
-  void markAsFinished() async {
+  Future<void> loadingDaytoPay() async {
     try {
-      var res = await http.put(
-          GlobalVariables.api + '/worker/jobs/changeStatusJob',
-          body: {'jobID': jobData.id, 'status': 'finished'});
+      // var res = await http.get(
+      //   GlobalVariables.api + '/worker/payment/getUnpaidDays/' + jobData.id,
+      // );
+      var res = await http.get(
+        GlobalVariables.api +
+            '/worker/payment/getUnpaidDays/605ba4a072ab360015591d29',
+      );
       print(res.statusCode);
       switch (res.statusCode) {
         case 200:
           print('bien hecho');
+          daystoPay = DaystoPay.fromJson(jsonDecode(res.body)[0]);
+          daystoPay.days.map((e) => {statePay.add(false.obs)}).toList();
+          update(["daysList"]);
           btnController.success();
-          Timer(
-              Duration(
-                seconds: 2,
-              ),
-              () => Get.to(HomePage(),
-                  transition: Transition.leftToRightWithFade));
           break;
         case 500:
           btnController.error();
