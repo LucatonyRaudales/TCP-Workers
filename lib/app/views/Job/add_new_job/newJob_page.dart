@@ -1,6 +1,7 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
@@ -64,17 +65,19 @@ class _NewJobPageState extends State<NewJobPage> {
           new SizedBox(height: 15.sp),
 
           new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.sp),
+              width: Get.width /2.6,
+              padding: EdgeInsets.symmetric(horizontal: 5.sp),
               decoration: BoxDecoration(
                 border: Border.all(color: typeSelected != null ? main_color : Colors.red),
                 borderRadius: BorderRadius.circular(25)
               ),
               child: DropdownButton(
-                hint: new Text(typeSelected ?? 'Project by: ', style: bodyFont) ,
+                isExpanded: true,
+                hint: new Text( typeSelected ?? 'Project by: ', style: bodyFont, textAlign: TextAlign.center),
                 dropdownColor: Colors.white,
                 style: subTitleFont,
                 elevation: 5,
@@ -92,7 +95,7 @@ class _NewJobPageState extends State<NewJobPage> {
             ),
 
             Input(
-              width: 100,
+              width: Get.width /2,
               hintText: "Salary", 
               icon: CupertinoIcons.money_dollar, 
               controller: ctrl.salary,
@@ -125,7 +128,7 @@ class _NewJobPageState extends State<NewJobPage> {
               color: main_color,
               errorColor: Colors.red,
               successColor: Colors.green,
-              child: Text('Add job', style: TextStyle(color: Colors.white)),
+              child: Text('Save', style: TextStyle(color: Colors.white)),
               controller: ctrl.btnController,
               onPressed:()=> _formKey.currentState.validate() ? ctrl.setNewJob(type: typeSelected) : ctrl.btnController.stop(),
             ),

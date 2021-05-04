@@ -10,6 +10,8 @@ import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
 import 'package:tcp_workers/app/views/Job/my_jobs/jobs_model.dart';
 
+import '../job_controller.dart';
+
 class EditJobCtrl extends GetxController{
   final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   Job jobData = Get.arguments;  
@@ -39,6 +41,9 @@ class EditJobCtrl extends GetxController{
         });
       switch(response.statusCode){
         case 200:
+          Get.put(JobCtrl());
+          JobCtrl inst = Get.find();
+          inst.jobData = jobData;
           MySnackBar.show(title: 'Susccess', message: 'You are updated ${jobData.name} job', backgroundColor: Colors.green, icon: CupertinoIcons.check_mark_circled);
           btnController.success();
           Timer(Duration(seconds: 3), ()=> Get.back());

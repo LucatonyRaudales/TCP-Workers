@@ -31,7 +31,8 @@ class JobPage extends StatelessWidget {
                 onSelected: (value) {
                   switch(value){
                     case 0:
-                    Get.to(EditJobPage(), arguments: ctrl.jobData, transition: Transition.rightToLeftWithFade);
+                    ctrl.editJobData(context);
+                    //Get.to(EditJobPage(), arguments: ctrl.jobData.value, transition: Transition.rightToLeftWithFade);
                     break;
                     case 1:
                       ctrl.showButton.value = true;

@@ -1,6 +1,7 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
@@ -63,10 +64,11 @@ class _EditJobPageState extends State<EditJobPage> {
             new SizedBox(height: 15.sp),
 
             new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
               Container(
+              width: Get.width /2.6,
                 padding: EdgeInsets.symmetric(horizontal: 10.sp),
                 decoration: BoxDecoration(
                   border: Border.all(color: main_color),
@@ -94,7 +96,7 @@ class _EditJobPageState extends State<EditJobPage> {
               ),
 
               Input(
-                width: 250,
+                width: Get.width /2,
                 onChanged: (val)=> ctrl.jobData.salary = int.tryParse(val),
                 hintText: "Salary", 
                 icon: CupertinoIcons.money_dollar, 
