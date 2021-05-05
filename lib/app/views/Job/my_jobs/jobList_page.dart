@@ -24,7 +24,29 @@ class JobsListPage extends StatelessWidget {
           : SizedBox()
         ],
       ),
-      body:FutureBuilder<List<Job>>(
+      body: GetBuilder<JobsListCtrl>(
+        init: JobsListCtrl(),
+        builder: (_ctrl) {
+          return Container(
+            child:  _ctrl.jobList != null &&_ctrl.jobList.jobList.isNotEmpty ? new ListView.builder(
+                itemCount: _ctrl.jobList.jobList.length,
+                itemBuilder: (context, index){
+                  return jobCard(job: _ctrl.jobList.jobList[index]);
+                },
+            ) :
+            JobsListCtrl().status == 'active' ? 
+            Center(
+              child: new Text('press the (+) icon to add a new job', style: titleFont)
+            )
+            :
+            Center(
+              child: new Text('No data to display...', style: titleFont)
+            )
+          );
+        },
+        )
+      );
+        /*FutureBuilder<List<Job>>(
         future:JobsListCtrl().getJobsList(),
         builder:(context, snapshot){
           if(snapshot.hasData){
@@ -49,9 +71,7 @@ class JobsListPage extends StatelessWidget {
           return Center(
             child: MyProgressBar(),
           );
-        },
-      )
-    );
+    );*/
   }
 
   Widget jobCard({Job job}){

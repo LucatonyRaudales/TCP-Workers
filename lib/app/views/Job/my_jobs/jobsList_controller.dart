@@ -22,7 +22,7 @@ class JobsListCtrl extends GetxController{
     getJobsList();
   }
   
-  Future<List<Job> > getJobsList()async{
+  Future getJobsList()async{
     print(status);
     try{
       var userDecode = json.decode(box.read('userData'));
@@ -33,7 +33,7 @@ class JobsListCtrl extends GetxController{
         case 200:
         var decode = json.decode(response.body);
         jobList = JobList.fromJson(decode);
-        return jobList.jobList;
+        return update();
         break;
         default: 
         
