@@ -34,10 +34,11 @@ class EditJobCtrl extends GetxController{
     try{
       var response = await http.put(GlobalVariables.api + '/worker/jobs/updatejob',
       body: {
-          'name' : jobData.name,
-          'type': jobData.type,
-          'salary' : jobData.salary.toString(),
-          'address' : json.encode({'state' : jobData.address.state, 'city':jobData.address.city}),
+        'jobID' : jobData.id,
+        'name' : jobData.name,
+        'type': jobData.type,
+        'salary' : jobData.salary.toString(),
+        'address' : json.encode({'state' : jobData.address.state, 'city':jobData.address.city}),
         });
       switch(response.statusCode){
         case 200:

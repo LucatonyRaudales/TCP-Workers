@@ -13,7 +13,6 @@ import 'package:tcp_workers/app/common/variables.dart';
 import 'package:tcp_workers/app/views/Home/home_page.dart';
 import '../../Style/Colors.dart';
 import '../../Style/text.dart';
-import '../../Style/text.dart';
 import '../../common/textFormField.dart';
 import '../../common/validations.dart';
 import 'my_jobs/jobsList_controller.dart';
@@ -82,10 +81,11 @@ class JobCtrl extends GetxController{
     try{
       var response = await http.put(GlobalVariables.api + '/worker/jobs/updatejob',
       body: {
+          'jobID': jobData.id,
           'name' : jobData.name,
           'type': jobData.type,
           'salary' : jobData.salary.toString(),
-          'address' : {'state' : jobData.address.state, 'city':jobData.address.city},
+          'address' : json.encode({'state' : jobData.address.state, 'city':jobData.address.city}),
         });
       switch(response.statusCode){
         case 200:
