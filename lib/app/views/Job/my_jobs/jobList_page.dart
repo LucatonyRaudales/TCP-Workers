@@ -42,7 +42,7 @@ class JobsListPage extends StatelessWidget {
             )
             :
             Center(
-              child: new Text('No data to display...paddingOnly()', style: titleFont)
+              child: new Text('No data to display...', style: titleFont)
             )
             ;
           }

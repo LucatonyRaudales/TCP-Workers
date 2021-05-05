@@ -85,16 +85,17 @@ class JobCtrl extends GetxController{
           'name' : jobData.name,
           'type': jobData.type,
           'salary' : jobData.salary.toString(),
-          'address' : json.encode({'state' : jobData.address.state, 'city':jobData.address.city}),
+          'address' : {'state' : jobData.address.state, 'city':jobData.address.city},
         });
       switch(response.statusCode){
         case 200:
           Get.put(JobsListCtrl());
           JobsListCtrl inst = Get.find();
-          inst.getJobsList();
+          inst.getjobsAfterUpdate(mystatus: jobData.status);
           update();
           MySnackBar.show(title: 'Susccess', message: 'You are updated ${jobData.name} job', backgroundColor: Colors.green, icon: CupertinoIcons.check_mark_circled);
           btnController.success();
+          Timer(Duration(seconds:3), ()=> Get.back());
         break;
         case 500:
           MySnackBar.show(title: 'Error!', message: 'There was an unexpected error, please try again', backgroundColor: Colors.red, icon: CupertinoIcons.xmark_circle);
@@ -110,110 +111,106 @@ class JobCtrl extends GetxController{
   }
 
   void editJobData(BuildContext context)async{
-  showFlexibleBottomSheet<void>(
-      minHeight: 0,
-      initHeight: 0.7,
-      maxHeight: 1,
-      context: context,
-      builder: _buildBottomSheet,
-      anchors: [0, 0.5, 1],
-    );
+    showDialog(
+        context: context,
+    builder: (_) => new AlertDialog(
+      title: new Text('Edit job data', style: subTitleFont, textAlign: TextAlign.center,),
+      //shape: CircleBorder(BorderSide.circular(25)),
+      content: _buildBottomSheet(context),
+      actions: []
+    ));
   }
- Widget _buildBottomSheet(BuildContext context, ScrollController scrollController,double bottomSheetOffset,) {
+ Widget _buildBottomSheet(BuildContext context) {
     var _formKey = GlobalKey<FormState>();
-    return Material(
-        color: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40),
-            ),
-          ),
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child:Form(
-          key: _formKey,
-          child: new Column(
-            children: [
-            new SizedBox(height: 25.ssp),
-            new Text('Edit job data', style: titleFont, textAlign: TextAlign.center,),
+    return Container(
+      height: Get.height,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child:Form(
+      key: _formKey,
+      child: new ListView(
+        children: [
+        new SizedBox(height: 25.ssp),
 
-            new SizedBox(height: 25.ssp),
+        Input(
+            hintText: "Name", 
+            icon: CupertinoIcons.textformat, 
+            initialValue: jobData.name,
+            onChanged: (val)=> jobData.name = val,
+            textInputType: TextInputType.text,
+            obscureText: false,
+            validator: Validations.validateName,
+          ),
+
+          new SizedBox(height: 20.sp),
+
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+            Container(
+            width: Get.width /3.6,
+              padding: EdgeInsets.only(left: 5.sp),
+              decoration: BoxDecoration(
+                border: Border.all(color: main_color),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: DropdownButton(
+                hint: new Text(typeSelected ?? 'Project by: ', style: bodyFont) ,
+                dropdownColor: Colors.white,
+                style: subTitleFont,
+                elevation: 5,
+                icon: Icon(Icons.arrow_drop_down),
+                iconSize: 30.sp,
+                value: typeSelected ?? jobData.type,
+                onChanged: (val){
+                  typeSelected = val;
+                  jobData.type = val;
+                  update();
+                },
+                items: list.map((e){
+                  return DropdownMenuItem(
+                    value: e,
+                    child:  new Text(e),
+                  );
+                }).toList(),
+              ),
+            ),
 
             Input(
-                hintText: "Name", 
-                icon: CupertinoIcons.textformat, 
-                initialValue: jobData.name,
-                onChanged: (val)=> jobData.name = val,
-                textInputType: TextInputType.text,
-                obscureText: false,
-                validator: Validations.validateName,
-              ),
-
-              new SizedBox(height: 20.sp),
-
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Container(
-                width: Get.width /2.6,
-                  padding: EdgeInsets.symmetric(horizontal: 10.sp),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: main_color),
-                    borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: DropdownButton(
-                    hint: new Text(typeSelected ?? 'Project by: ', style: bodyFont) ,
-                    dropdownColor: Colors.white,
-                    style: subTitleFont,
-                    elevation: 5,
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 30.sp,
-                    value: typeSelected ?? jobData.type,
-                    onChanged: (val){
-                      typeSelected = val;
-                      jobData.type = val;
-                      update();
-                    },
-                    items: list.map((e){
-                      return DropdownMenuItem(
-                        value: e,
-                        child:  new Text(e),
-                      );
-                    }).toList(),
-                  ),
-                ),
-
-                Input(
-                  width: Get.width /2,
-                  onChanged: (val)=> jobData.salary = int.tryParse(val),
-                  hintText: "Salary", 
-                  icon: CupertinoIcons.money_dollar, 
-                  initialValue: jobData.salary.toString(),
-                  textInputType: TextInputType.number,
-                  obscureText: false,
-                  validator: Validations.validateSalary,
-                ),
-              ],),
-
-              new SizedBox(height: 20.sp),
-
-              CSCPicker(
-                onCountryChanged: (value) {
-                selectCountry(value);
-              },
-              ///triggers once state selected in dropdown
-                onStateChanged: (value) {
-                  selectState(value);
-                },
-
-              ///triggers once city selected in dropdown
-                onCityChanged: (value) {
-                  selectCity(value);
-                },
+              width: Get.width /3,
+              onChanged: (val)=> jobData.salary = int.tryParse(val),
+              hintText: "Salary", 
+              icon: CupertinoIcons.money_dollar, 
+              initialValue: jobData.salary.toString(),
+              textInputType: TextInputType.number,
+              obscureText: false,
+              validator: Validations.validateSalary,
             ),
+          ],),
+
+          new SizedBox(height: 20.sp),
+
+          CSCPicker(
+            onCountryChanged: (value) {
+            selectCountry(value);
+          },
+          ///triggers once state selected in dropdown
+            onStateChanged: (value) {
+              selectState(value);
+            },
+
+          ///triggers once city selected in dropdown
+            onCityChanged: (value) {
+              selectCity(value);
+            },
+        ),
 
               new SizedBox(height: 40.sp),
               RoundedLoadingButton(
@@ -234,7 +231,6 @@ class JobCtrl extends GetxController{
               )
           ],),
         ),
-      ),
     );
   }
 }

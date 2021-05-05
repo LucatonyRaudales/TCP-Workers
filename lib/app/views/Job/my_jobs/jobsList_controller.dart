@@ -17,6 +17,11 @@ class JobsListCtrl extends GetxController{
     super.onInit();
   }
 
+  void getjobsAfterUpdate({String mystatus}){
+    status = mystatus;
+    getJobsList();
+  }
+  
   Future<List<Job> > getJobsList()async{
     print(status);
     try{
