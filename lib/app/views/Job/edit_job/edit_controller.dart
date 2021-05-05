@@ -34,8 +34,7 @@ class EditJobCtrl extends GetxController {
   void updateJob() async {
     print(jobData.address.state);
     try {
-      var response =
-          await http.put(GlobalVariables.api + '/worker/jobs/updatejob', body: {
+      var response = await http.put(GlobalVariables.api + '/worker/jobs/updatejob', body: {
         'jobID': jobData.id,
         'name': jobData.name,
         'type': jobData.type,
