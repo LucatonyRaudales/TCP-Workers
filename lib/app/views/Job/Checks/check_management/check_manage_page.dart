@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -19,7 +18,6 @@ class CheckManagementPage extends StatefulWidget {
 }
 
 class _CheckManagementPageState extends State<CheckManagementPage> {
-
 
   TimeRange range = TimeRange(startTime: TimeOfDay(hour: 00, minute: 00), endTime: TimeOfDay(hour: 00, minute: 00));
 
@@ -68,7 +66,7 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
 
       new Column(
         children: [
-          Text(ctrl.checkData.hours.toString(), style: titleFont),
+          Text(ctrl.checkData.hours.toString(), style: ctrl.checkData.hours > 0 ? titleFont : TextStyle(fontSize:20.sp, color: Colors.red )),
           new Text('hours worked', style: titleFont),
         ],
       ),
@@ -168,6 +166,7 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
           onChanged: (newValue)async{
             ctrl.checkData.breakMinutes = newValue;
             ctrl.calculateHoursWorked(time: range);
+            setState(() {});
             },
           )
         )

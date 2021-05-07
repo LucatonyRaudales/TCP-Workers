@@ -167,14 +167,14 @@ class Check {
 
     factory Check.fromJson(Map<String, dynamic> json) => Check(
         date: DateTime.parse(json["date"]),
-        hours: json["hours"],
+        hours: json["hours"].toDouble(),
         breakMinutes: json["break_minutes"],
         id: json["_id"],
         checkIn: DateTime.parse(json["in"]),
         out: DateTime.parse(json["out"]),
         offset: json["offset"],
         salary: json["salary"],
-        payment: json["payment"],
+        payment: json["payment"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {

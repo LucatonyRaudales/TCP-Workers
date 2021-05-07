@@ -28,7 +28,7 @@ dependencies:
   introduction_screen: ^2.0.0
   csc_picker: ^0.0.5
   intl_phone_number_input: ^0.6.0
-  bottom_sheet: ^1.0.0
+  #google_mobile_ads: ^0.12.1+1
 
 flutter_icons:
   android: true

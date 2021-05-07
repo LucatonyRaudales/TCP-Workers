@@ -8,10 +8,10 @@ import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tcp_workers/app/views/Job/register_payment/register_payment_page.dart';
 import 'package:tcp_workers/app/views/Job/summary/summary_page.dart';
 import 'Checks/check_management/check_manage_page.dart';
 import 'Checks/checking/checking_page.dart';
-import 'edit_job/edit_page.dart';
 import 'job_controller.dart';
 
 class JobPage extends StatelessWidget {
@@ -186,6 +186,23 @@ class JobPage extends StatelessWidget {
               leading: new Icon(CupertinoIcons.calendar),
               title: new Text('Summary', style: subTitleFont,),
               trailing: new Icon(CupertinoIcons.chevron_right),
+            ),
+          ),
+        ),
+
+        SizedBox(height: 5.sp,),
+
+        InkWell(
+          onTap: ()=> Get.to(()=> RegisterPaymentPage(), 
+          transition: Transition.rightToLeftWithFade, 
+          arguments: ctrl.jobData.id),
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
+            child: ListTile(
+              leading: new Icon(CupertinoIcons.calendar),
+              title: new Text('Register payment', style: subTitleFont,),
+              trailing: new Icon(CupertinoIcons.money_dollar),
             ),
           ),
         ),
