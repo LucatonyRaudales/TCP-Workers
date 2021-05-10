@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/models/checks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,26 +18,35 @@ class _RegisterPaymentPageState extends State<RegisterPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: new Text('Register payment', style: titleFont)
-      ),
-      body: GetBuilder<RegisterPaymentCtrl>(
+    return GetBuilder<RegisterPaymentCtrl>(
         init: RegisterPaymentCtrl(),
         builder: (_ctrl){
-          if(_ctrl.listCheck.days.isNotEmpty)
-          return Container(
-            child:  ListView.separated(
-              itemCount: _ctrl.listCheck.days.length,
-              separatorBuilder:  (BuildContext context, int index) => Divider(),
-              itemBuilder: (BuildContext context, int index) {
-                return _card(checkDay: _ctrl.listCheck.days[index], index: index);
-              })
-          );
-          return CircularProgressIndicator();
-        }),
-    );
+          return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: new Text('Register payment', style: titleWhiteFont)
+      ),
+      floatingActionButtonLocation:  FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: main_color,
+        onPressed:()=> _ctrl.registerPay(),
+        child: Icon(Icons.save, color: Colors.white),
+      ),
+      body: Container(
+        child: _ctrl.listCheck.days != null ? 
+        ListView.separated(
+          itemCount: _ctrl.listCheck.days.length,
+          separatorBuilder:  (BuildContext context, int index) => Divider(),
+          itemBuilder: (BuildContext context, int index) {
+            return _card(checkDay: _ctrl.listCheck.days[index], index: index);
+          })
+          : 
+          Center(
+            child: CircularProgressIndicator()
+          )
+        )
+      );
+    });
   }
 
   Widget _card({Day checkDay, int index}){

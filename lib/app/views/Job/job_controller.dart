@@ -9,6 +9,8 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
+import 'package:tcp_workers/app/models/data_paid.dart';
+import 'package:tcp_workers/app/repository/payment.dart';
 import 'package:tcp_workers/app/views/Home/home_page.dart';
 import '../../Style/Colors.dart';
 import '../../Style/text.dart';
@@ -24,14 +26,25 @@ class JobCtrl extends GetxController{
     String state;
     String city;
   RxBool showButton = false.obs;
+  DataPaid dataPaid = DataPaid();
   List list = ['hour', 'day'];
   String typeSelected;
   final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
+  PaymentRepository _paymentRepository = PaymentRepository();
 
   @override
   void onInit() {
+    getTotalPaid();
     showButton.value = false;
     super.onInit();
+  }
+
+  void getTotalPaid(){
+    _paymentRepository.getTotalPaidByJob(jobID: jobData.id)
+      .then((value){
+        dataPaid = value;
+        update();
+      });
   }
 
   void markAsFinished()async{

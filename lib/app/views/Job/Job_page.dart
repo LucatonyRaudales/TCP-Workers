@@ -120,14 +120,14 @@ class JobPage extends StatelessWidget {
           money2: true,
         ),
         SizedBox(height:25.sp),
-        dataColumn(
-          data1: '171', 
-          title1: 'Hours', 
-          money1: false,
-          data2: '3330', 
-          title2: 'Paid', 
-          money2: true
-        ),
+          dataColumn(
+            data1: ctrl.dataPaid.hours.toString(), 
+            title1: 'Hours', 
+            money1: false,
+            data2: ctrl.dataPaid.total.toString(), 
+            title2: 'Paid', 
+            money2: true
+          ),
 
         Divider(
           height: 30.sp,
@@ -200,9 +200,9 @@ class JobPage extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             elevation: 5,
             child: ListTile(
-              leading: new Icon(CupertinoIcons.calendar),
+              leading: new Icon(CupertinoIcons.money_dollar),
               title: new Text('Register payment', style: subTitleFont,),
-              trailing: new Icon(CupertinoIcons.money_dollar),
+              trailing: new Icon(CupertinoIcons.chevron_right),
             ),
           ),
         ),
