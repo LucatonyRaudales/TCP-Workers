@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
-import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final String title;
@@ -18,7 +17,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return  AppBar(
       title: new Column(children:[
-        Text(title ??'Techno contructions +'.toUpperCase(), style: subTitleWhiteFont),
+        Text(title ??'Techno contructions plus'.toUpperCase(), style: subTitleWhiteFont),
         Text(title != null ? 'Workers' : 'by Techno Business Plus', style:minimalWhiteFont)
       ]),
       centerTitle: true,

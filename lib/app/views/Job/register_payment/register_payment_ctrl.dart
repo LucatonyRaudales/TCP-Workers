@@ -43,7 +43,7 @@ class RegisterPaymentCtrl extends GetxController{
       if(val){
         Get.put(JobCtrl());
         JobCtrl inst = Get.find();
-        inst.getTotalPaid();
+        inst.getTotalPaid(jobID: jobID);
         MySnackBar.show(title: 'Susccess', message: 'you was registered the payment', backgroundColor: Colors.green, icon: CupertinoIcons.check_mark_circled);
           Timer(Duration(seconds: 3), ()=> Get.back());
       }else{

@@ -16,6 +16,7 @@ class CheckingCtrl extends GetxController{
   RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   RxDouble hourWorked = 0.0.obs, payment = 0.0.obs;
   RxBool isVerifying = true.obs;
+  TimeRange rangeDefault;
   var breakTime = 0.obs;
   final box = GetStorage();
   
@@ -32,6 +33,9 @@ class CheckingCtrl extends GetxController{
         case 200:
           if(response.body == 'false'){
             isVerifying.value = false;
+            if(jobData.type  == "day"){
+              isJobByday();
+            }
           }else{
             MySnackBar.show(title: 'Today has been checked!', message: 'It can only be checked once a day, come back tomorrow or you can update today\'s check', backgroundColor: Colors.orange, icon: CupertinoIcons.exclamationmark_triangle);
             Timer(Duration(seconds: 3), ()=> Get.back());
@@ -42,11 +46,18 @@ class CheckingCtrl extends GetxController{
           Timer(Duration(seconds: 3), ()=> Get.back());
         break;
         default:
-        print('hay cabballo, asaber que pedo');
+        print('hay caballo, asaber que pedo');
       }
     }catch(err){
       print(err);
     }
+  }
+
+  void isJobByday()async{
+    hourWorked.value = 8.0;
+    breakTime.value = 60;
+    rangeDefault = TimeRange(startTime: TimeOfDay(hour: 07, minute: 00), endTime: TimeOfDay(hour: 16, minute: 00));
+    payment.value = jobData.salary.toDouble();
   }
 
   void calculateHoursWorked({TimeRange time}){
@@ -57,10 +68,11 @@ class CheckingCtrl extends GetxController{
 
   double toDouble(TimeOfDay time)=> time.hour + time.minute/60.0;
 
-  void setCheck({TimeRange time})async{
-    if(hourWorked.value == 0.0){ 
+  void setCheck({TimeRange timeFromUI})async{
+    TimeRange time = jobData.type == "day" ? rangeDefault : timeFromUI;
+    if(hourWorked.value < 0.5){ 
       btnController.reset();
-      return MySnackBar.show(title: 'Hours worked is 0', message: 'Select the time of entry - exit and lunch time of today', backgroundColor: Colors.redAccent, icon: CupertinoIcons.xmark_circle);
+      return MySnackBar.show(title: 'Hours worked is lest than 0.5', message: 'Select the time of entry - exit and lunch time of today', backgroundColor: Colors.redAccent, icon: CupertinoIcons.xmark_circle);
     }
 
     try{

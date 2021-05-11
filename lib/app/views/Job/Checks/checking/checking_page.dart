@@ -56,7 +56,7 @@ class _CheckinPageState extends State<CheckinPage> {
         ],
       ),
 
-    dataColumn(),
+    dataColumn(ctrl: ctrl),
 
       new Column(
         children: [
@@ -67,6 +67,7 @@ class _CheckinPageState extends State<CheckinPage> {
 
     SizedBox(height: 45.sp),
 
+  ctrl.jobData.type == "hour" ? 
     InkWell(
       onTap:()async {
         TimeRange data = await showTimeRangePicker(
@@ -86,11 +87,12 @@ class _CheckinPageState extends State<CheckinPage> {
           trailing: new Icon(Icons.touch_app, color: main_color),
         ),
         ),
-    ),
+    )   : SizedBox(),
 
   SizedBox(height: 20,),
-
-  _timeSelect(ctrl: ctrl),
+  ctrl.jobData.type == "hour" ? 
+  _timeSelect(ctrl: ctrl) 
+  : SizedBox(), 
 
     SizedBox(height: 50.sp),
 
@@ -100,7 +102,7 @@ class _CheckinPageState extends State<CheckinPage> {
       successColor: Colors.green,
       child: Text('Check today'.toUpperCase(), style: TextStyle(color: Colors.white)),
       controller: ctrl.btnController,
-      onPressed:()=> ctrl.setCheck(time: range),
+      onPressed:()=> ctrl.setCheck(timeFromUI: range),
     )
   ]);
   }
@@ -112,7 +114,7 @@ class _CheckinPageState extends State<CheckinPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children:[
-          new Text(range.startTime.format(context), style: titleFont),
+          new Text(ctrl.jobData.type == "hour" ? range.startTime.format(context) : "--:--", style: titleFont),
           new Text('In', style: subTitleFont)
         ]),
 
@@ -123,7 +125,7 @@ class _CheckinPageState extends State<CheckinPage> {
         ),
 
         Column(children:[
-          new Text(range.endTime.format(context), style: titleFont),
+          new Text(ctrl.jobData.type == "hour" ? range.endTime.format(context) : "--:--", style: titleFont),
           new Text('Out', style: subTitleFont)
         ])
       ],

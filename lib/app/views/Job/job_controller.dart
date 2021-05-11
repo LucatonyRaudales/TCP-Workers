@@ -21,7 +21,7 @@ import 'my_jobs/jobs_model.dart';
 import 'package:http/http.dart' as http;
 
 class JobCtrl extends GetxController{
-    Job jobData = Get.arguments;  
+    Job jobData = Job();  
     String country;
     String state;
     String city;
@@ -34,13 +34,14 @@ class JobCtrl extends GetxController{
 
   @override
   void onInit() {
-    getTotalPaid();
+    jobData = Get.arguments;
+    getTotalPaid(jobID: jobData.id);
     showButton.value = false;
     super.onInit();
   }
 
-  void getTotalPaid(){
-    _paymentRepository.getTotalPaidByJob(jobID: jobData.id)
+  void getTotalPaid({String jobID}){
+    _paymentRepository.getTotalPaidByJob(jobID: jobID)
       .then((value){
         dataPaid = value;
         update();

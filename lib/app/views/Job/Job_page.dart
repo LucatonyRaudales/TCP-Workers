@@ -111,11 +111,12 @@ class JobPage extends StatelessWidget {
           thickness: 1.sp,
         ),
 
+       
         dataColumn(
           data1: ctrl.jobData.salary.toString(), 
           title1: 'Salary', 
           money1: true,
-          data2: (ctrl.jobData.salary * 1.5).toString(), 
+          data2:  ctrl.jobData.type == 'day' ? "--" : (ctrl.jobData.salary * 1.5).toString(), 
           title2: 'Overtime', 
           money2: true,
         ),
@@ -190,23 +191,6 @@ class JobPage extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 5.sp,),
-
-        InkWell(
-          onTap: ()=> Get.to(()=> RegisterPaymentPage(), 
-          transition: Transition.rightToLeftWithFade, 
-          arguments: ctrl.jobData.id),
-          child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 5,
-            child: ListTile(
-              leading: new Icon(CupertinoIcons.money_dollar),
-              title: new Text('Register payment', style: subTitleFont,),
-              trailing: new Icon(CupertinoIcons.chevron_right),
-            ),
-          ),
-        ),
-
         SizedBox(height: 25.sp,),
 
         Obx(() =>ctrl.showButton.value ?
@@ -255,7 +239,24 @@ class JobPage extends StatelessWidget {
           trailing: new Icon(CupertinoIcons.chevron_right),
         ),
       )
-    )
+    ),
+
+        SizedBox(height: 5.sp,),
+
+        InkWell(
+          onTap: ()=> Get.to(()=> RegisterPaymentPage(), 
+          transition: Transition.rightToLeftWithFade, 
+          arguments: ctrl.jobData.id),
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
+            child: ListTile(
+              leading: new Icon(CupertinoIcons.money_dollar),
+              title: new Text('Register payment', style: subTitleFont,),
+              trailing: new Icon(CupertinoIcons.chevron_right),
+            ),
+          ),
+        ),
       ],
     );
   }
