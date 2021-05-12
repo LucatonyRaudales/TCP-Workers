@@ -31,7 +31,7 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
       children:[
       Text(_.jobData.name.toUpperCase(), style: subTitleWhiteFont),
       SizedBox(height: 3,),
-      Text('Techno Business Worker', style:minimalWhiteFont),
+      Text('Techno Contruction Plus', style:minimalWhiteFont),
       ]),
       centerTitle: true,
       backgroundColor: main_color,

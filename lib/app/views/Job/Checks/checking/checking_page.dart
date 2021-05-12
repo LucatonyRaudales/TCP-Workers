@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
@@ -49,6 +50,8 @@ class _CheckinPageState extends State<CheckinPage> {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children:[
+          TextButton.icon(onPressed:()=> ctrl.pickDate(context), icon: Icon(Icons.edit), label: Text(DateFormat.yMMMMEEEEd().format(ctrl.date.value).toString(), style: titleFont)),
+
       new Column(
         children: [
           Obx(() => Text(ctrl.hourWorked.value.toString(), style: titleFont)),

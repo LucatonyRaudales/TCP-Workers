@@ -136,7 +136,8 @@ class JobCtrl extends GetxController{
  Widget _buildBottomSheet(BuildContext context) {
     var _formKey = GlobalKey<FormState>();
     return Container(
-      height: Get.height,
+      height: 400,
+      width: 350, 
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(

@@ -15,20 +15,21 @@ class CheckingCtrl extends GetxController{
   Job jobData = Get.arguments;
   RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   RxDouble hourWorked = 0.0.obs, payment = 0.0.obs;
-  RxBool isVerifying = true.obs;
+  RxBool isVerifying = false.obs;
+  Rx<DateTime> date = DateTime.now().obs;
   TimeRange rangeDefault;
   var breakTime = 0.obs;
   final box = GetStorage();
   
   @override
   void onInit() {
-    checkifTodayIsChecked();
+    isJobByday();
     super.onInit();
   }
 
   void checkifTodayIsChecked()async{
     try{
-      var response = await http.get(GlobalVariables.api + '/worker/check/verifyToday/' + jobData.id);
+      var response = await http.get(GlobalVariables.api + '/worker/check/verifyToday/' + jobData.id +"?date=${date.value}");
       switch (response.statusCode) {
         case 200:
           if(response.body == 'false'){
@@ -60,6 +61,18 @@ class CheckingCtrl extends GetxController{
     payment.value = jobData.salary.toDouble();
   }
 
+    Future pickDate(BuildContext context) async {
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: date.value,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime.now(),
+    );
+
+    if (newDate == null) return;
+    date.value = newDate; 
+  }
+
   void calculateHoursWorked({TimeRange time}){
     if(time.endTime == null || time.startTime == null) return null;
     hourWorked.value = (toDouble(time.endTime) - toDouble(time.startTime)) - breakTime.value/60;
@@ -84,7 +97,7 @@ class CheckingCtrl extends GetxController{
       {
         'jobID' : jobData.id,/* 
         'userID' : user.user.id, */
-        'date' : DateTime.now().toString(),
+        'date' : date.value.toString(),
         'in' : DateTime(now.year, now.month, now.day, time.startTime.hour, time.startTime.minute).toString(),
         'out' : DateTime(now.year, now.month, now.day, time.endTime.hour, time.endTime.minute).toString(),
         'hours' : hourWorked.value.toString(),
@@ -98,6 +111,11 @@ class CheckingCtrl extends GetxController{
           btnController.success();
           MySnackBar.show(title: 'successful check', message: 'you have successfully checked today', backgroundColor: Colors.green, icon: CupertinoIcons.checkmark_alt_circle);
           Timer(Duration(seconds: 3), ()=> Get.back());
+        break;
+        case 406:
+          btnController.stop();
+          MySnackBar.show(title: 'Today has been checked!', message: 'It can only be checked once a day, come back tomorrow or you can update today\'s check', backgroundColor: Colors.orange, icon: CupertinoIcons.exclamationmark_triangle);
+          Timer(Duration(seconds: 3), ()=>  btnController.reset());
         break;
         case 500:
           btnController.error();
