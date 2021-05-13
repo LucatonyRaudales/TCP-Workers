@@ -220,7 +220,7 @@ class JobPage extends StatelessWidget {
             elevation: 5,
             child: ListTile(
               leading: new Icon(CupertinoIcons.checkmark_rectangle),
-              title: new Text('Check entry and exit', style: subTitleFont,),
+              title: new Text('Check sign in & sign out', style: subTitleFont,),
               trailing: new Icon(CupertinoIcons.chevron_right),
             ),
           )

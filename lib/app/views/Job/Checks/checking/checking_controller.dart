@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
@@ -106,6 +107,7 @@ class CheckingCtrl extends GetxController{
         'salary' : jobData.salary.toString(),
         'payment' : payment.value.toString()
       });
+
       switch (response.statusCode) {
         case 200:
           btnController.success();
@@ -114,7 +116,7 @@ class CheckingCtrl extends GetxController{
         break;
         case 406:
           btnController.stop();
-          MySnackBar.show(title: 'Today has been checked!', message: 'It can only be checked once a day, come back tomorrow or you can update today\'s check', backgroundColor: Colors.orange, icon: CupertinoIcons.exclamationmark_triangle);
+          MySnackBar.show(title: '${DateFormat.yMMMMEEEEd().format(date.value)} has been checked!', message: 'can only be verified once per day', backgroundColor: Colors.orange, icon: CupertinoIcons.exclamationmark_triangle);
           Timer(Duration(seconds: 3), ()=>  btnController.reset());
         break;
         case 500:

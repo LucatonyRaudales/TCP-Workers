@@ -38,7 +38,7 @@ class Day {
     DateTime out;
     int offset;
     int salary;
-    int payment;
+    double payment;
     bool isCheck;
 
     factory Day.fromJson(Map<String, dynamic> json) => Day(
@@ -51,7 +51,7 @@ class Day {
         out: DateTime.parse(json["out"]),
         offset: json["offset"],
         salary: json["salary"],
-        payment: json["payment"],
+        payment: json["payment"].toDouble(),
         isCheck: false
     );
 

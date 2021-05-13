@@ -45,7 +45,8 @@ class CheckManagementController extends GetxController {
     if (newDate == null) return;
     dat.value = newDate; 
     date = newDate;
-    selectDate();
+    
+      checkDate();//selectDate();
   }
 
   void calculateHoursWorked({TimeRange time}){
