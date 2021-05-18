@@ -21,7 +21,7 @@ class SplashPage extends StatelessWidget {
               ),
               FadeInLeftBig(
                   child: new Text(
-                'by techno business plus',
+                'by Techno Business Plus',
                 style: bodyFont,
                 textAlign: TextAlign.center,
               ))

@@ -9,8 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/variables.dart';
+import 'package:tcp_workers/app/repository/checks.dart';
 import 'package:tcp_workers/app/views/Job/my_jobs/jobs_model.dart';
 import 'package:get/get.dart';
+import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 import 'dart:convert';
 import 'package:time_range_picker/time_range_picker.dart';
 
@@ -59,6 +61,7 @@ class CheckManagementController extends GetxController {
 
   void checkDate()async{
     print(date.toIso8601String());
+    print(date.toUtc());
     try{
       var response = await http.get(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.toUtc()}');
       switch (response.statusCode) {
@@ -118,6 +121,19 @@ class CheckManagementController extends GetxController {
     }catch(err){
       print(err);
     }
+  }
+
+  void disableCheck(){
+    ChecksRepository().disableCheck(jobID: jobData.id, checkID: checkData.id)
+    .then((value){
+      if(value){
+          MySnackBar.show(title: 'Check deleted', message: 'you just removed this check, it will no longer be visible', backgroundColor: Colors.grey, icon: CupertinoIcons.checkmark_alt_circle);
+          return Timer(Duration(seconds: 3), ()=> Get.off(SplashPage(), transition: Transition.rightToLeftWithFade));
+      }else{
+          MySnackBar.show(title: 'Error!', message: 'There was an unexpected error, please try again', backgroundColor: Colors.red, icon: CupertinoIcons.person_crop_circle_badge_xmark);
+          return Timer(Duration(seconds: 2), ()=> btnController.reset());
+      }
+    });
   }
 }
 

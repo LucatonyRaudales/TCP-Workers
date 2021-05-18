@@ -14,5 +14,6 @@ var bodyFont = TextStyle(fontSize: 12.sp, color: main_color);
 var bodyFontBold = TextStyle(fontSize: 12.sp, color: main_color, fontWeight: FontWeight.bold);
 var bodyFontWhiteBold = TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold);
 var bodyFontWhite = TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold);
+var bodyFontRed = TextStyle(fontSize: 12.sp, color: Colors.red, fontWeight: FontWeight.bold);
 var minimalFont = TextStyle(fontSize: 5.sp, color: main_color);
 var minimalWhiteFont = TextStyle(fontSize: 5.sp, color: Colors.white);

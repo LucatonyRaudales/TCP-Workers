@@ -6,6 +6,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:tcp_workers/app/common/progressBar.dart';
+import 'package:tcp_workers/app/common/rounded_secondary_button.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -60,6 +61,7 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children:[
+    SizedBox(height:30),
       Text(DateFormat.yMMMMEEEEd().format(ctrl.checkData.date.toLocal()), style: titleFont),
 
       SizedBox(height: 25.sp),
@@ -116,7 +118,17 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
       child: Text('Update check'.toUpperCase(), style: TextStyle(color: Colors.white)),
       controller: ctrl.btnController,
       onPressed:()=> ctrl.updateCheck(),
+    ),
+
+    SizedBox(height:30),
+    Container(
+      width:100,
+      child: MySecondaryButton(
+      onTap: ()=> ctrl.disableCheck(),
+      text: "Delete"
     )
+    ),
+    SizedBox(height:30),
   ]);
   }
 

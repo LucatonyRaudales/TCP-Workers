@@ -77,7 +77,11 @@ class CheckingCtrl extends GetxController{
   void calculateHoursWorked({TimeRange time}){
     if(time.endTime == null || time.startTime == null) return null;
     hourWorked.value = (toDouble(time.endTime) - toDouble(time.startTime)) - breakTime.value/60;
-    payment.value = hourWorked.value * jobData.salary;
+    if(hourWorked.value <= 0){
+      payment.value = 0.0;
+    }else{
+      payment.value = hourWorked.value * jobData.salary;
+    }
   }
 
   double toDouble(TimeOfDay time)=> time.hour + time.minute/60.0;
@@ -116,7 +120,7 @@ class CheckingCtrl extends GetxController{
         break;
         case 406:
           btnController.stop();
-          MySnackBar.show(title: '${DateFormat.yMMMMEEEEd().format(date.value)} has been checked!', message: 'can only be verified once per day', backgroundColor: Colors.orange, icon: CupertinoIcons.exclamationmark_triangle);
+          MySnackBar.show(title: '${DateFormat.yMMMMEEEEd().format(date.value)} has been checked!', message: 'we suggest you select another day or edit it in the check manager', backgroundColor: Colors.orange, icon: CupertinoIcons.exclamationmark_triangle);
           Timer(Duration(seconds: 3), ()=>  btnController.reset());
         break;
         case 500:

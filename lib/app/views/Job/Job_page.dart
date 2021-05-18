@@ -116,17 +116,18 @@ class JobPage extends StatelessWidget {
           data1: ctrl.jobData.salary.toString(), 
           title1: 'Salary', 
           money1: true,
-          data2:  ctrl.jobData.type == 'day' ? "--" : (ctrl.jobData.salary * 1.5).toString(), 
-          title2: 'Overtime', 
+          data2:   ctrl.dataPaid.total.toString(), 
+          title2: 'Paid', 
           money2: true,
         ),
         SizedBox(height:25.sp),
+        ctrl.jobData.type == 'day' ? SizedBox() :
           dataColumn(
             data1: ctrl.dataPaid.hours.toString(), 
             title1: 'Hours', 
             money1: false,
-            data2: ctrl.dataPaid.total.toString(), 
-            title2: 'Paid', 
+            data2: (ctrl.jobData.salary * 1.5).toString(), 
+            title2: 'Overtime', 
             money2: true
           ),
 
@@ -220,7 +221,7 @@ class JobPage extends StatelessWidget {
             elevation: 5,
             child: ListTile(
               leading: new Icon(CupertinoIcons.checkmark_rectangle),
-              title: new Text('Check sign in & sign out', style: subTitleFont,),
+              title: new Text('Sign in & sign out', style: subTitleFont,),
               trailing: new Icon(CupertinoIcons.chevron_right),
             ),
           )

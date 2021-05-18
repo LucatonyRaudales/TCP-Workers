@@ -18,7 +18,7 @@ class CheckinPage extends StatefulWidget {
 }
 
 class _CheckinPageState extends State<CheckinPage> {
-  TimeRange range = TimeRange(startTime: TimeOfDay(hour: 00, minute: 00), endTime: TimeOfDay(hour: 00, minute: 00));
+  TimeRange range = TimeRange(startTime: TimeOfDay(hour: 8, minute: 00), endTime: TimeOfDay(hour: 17, minute: 00));
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +114,13 @@ class _CheckinPageState extends State<CheckinPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        ctrl.jobData.type == "hour" ? 
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children:[
-          new Text(ctrl.jobData.type == "hour" ? range.startTime.format(context) : "--:--", style: titleFont),
+          new Text(range.startTime.format(context) , style: titleFont),
           new Text('In', style: subTitleFont)
-        ]),
+        ]) : Container(),
 
         Container(
           color: main_color,
@@ -127,10 +128,10 @@ class _CheckinPageState extends State<CheckinPage> {
           width: 25.sp,
         ),
 
-        Column(children:[
-          new Text(ctrl.jobData.type == "hour" ? range.endTime.format(context) : "--:--", style: titleFont),
+        ctrl.jobData.type == "hour" ? Column(children:[
+          new Text(range.endTime.format(context), style: titleFont),
           new Text('Out', style: subTitleFont)
-        ])
+        ]) : Container()
       ],
     );
   }
@@ -147,8 +148,10 @@ class _CheckinPageState extends State<CheckinPage> {
             new Icon(CupertinoIcons.hand_draw, size: 15.sp, color: main_color)
           ],),
           title: Obx(()=> NumberPicker(
+          haptics: true,
           step: 15,
-          textStyle: titleFont,
+          selectedTextStyle: TextStyle(fontSize:20.sp, color: Colors.green, fontWeight:FontWeight.bold ),
+          textStyle: subTitleFont,
           axis: Axis.horizontal,
           value: ctrl.breakTime.value,
           minValue: 0,

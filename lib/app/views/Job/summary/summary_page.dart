@@ -77,8 +77,8 @@ class _SummaryPageState extends State<SummaryPage> {
               SizedBox(height: 15.sp),
 
               ListView.builder(
-   primary: false,
-   shrinkWrap: true,
+                primary: false,
+                shrinkWrap: true,
                 itemCount: data.checks.length,
                 itemBuilder: (context, index){
                   return new Container(
@@ -138,10 +138,9 @@ class _SummaryPageState extends State<SummaryPage> {
                   );
                 })
             ],)
-            );
+          );
         }
-        if(snapshot.hasError) return new Text('Error', style: titleFont);
-        return MyProgressBar();
+        if(snapshot.hasError) return MyProgressBar();
       });
   }
 
