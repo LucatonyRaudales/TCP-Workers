@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,7 @@ class JobCtrl extends GetxController{
   String typeSelected;
   final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   PaymentRepository _paymentRepository = PaymentRepository();
+  RxBool overtime = false.obs, typeJobIsByday = true.obs;
 
   @override
   void onInit() {
@@ -41,6 +43,8 @@ class JobCtrl extends GetxController{
   }
 
   void getTotalPaid({String jobID}){
+    overtime.value = jobData.overtime;
+    typeJobIsByday.value = jobData.type == "day" ?  true : false;
     _paymentRepository.getTotalPaidByJob(jobID: jobID)
       .then((value){
         dataPaid = value;
@@ -91,12 +95,14 @@ class JobCtrl extends GetxController{
 
   void updateJob()async{
     print(jobData.address.state);
+    jobData.type = typeJobIsByday.value ? "day" : "hour";
     try{
       var response = await http.put(GlobalVariables.api + '/worker/jobs/updatejob',
       body: {
           'jobID': jobData.id,
           'name' : jobData.name,
           'type': jobData.type,
+          "overtime" : overtime.value.toString(),
           'salary' : jobData.salary.toString(),
           'address' : json.encode({'state' : jobData.address.state, 'city':jobData.address.city}),
         });
@@ -133,10 +139,10 @@ class JobCtrl extends GetxController{
       actions: []
     ));
   }
- Widget _buildBottomSheet(BuildContext context) {
+Widget _buildBottomSheet(BuildContext context) {
     var _formKey = GlobalKey<FormState>();
     return Container(
-      height: 400,
+      height: 600,
       width: 350, 
       decoration: BoxDecoration(
         color: Colors.white,
@@ -163,40 +169,6 @@ class JobCtrl extends GetxController{
           ),
 
           new SizedBox(height: 20.sp),
-
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-            Container(
-            width: Get.width /3.6,
-              padding: EdgeInsets.only(left: 5.sp),
-              decoration: BoxDecoration(
-                border: Border.all(color: main_color),
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: DropdownButton(
-                hint: new Text(typeSelected ?? 'Project by: ', style: bodyFont) ,
-                dropdownColor: Colors.white,
-                style: subTitleFont,
-                elevation: 5,
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 30.sp,
-                value: typeSelected ?? jobData.type,
-                onChanged: (val){
-                  typeSelected = val;
-                  jobData.type = val;
-                  update();
-                },
-                items: list.map((e){
-                  return DropdownMenuItem(
-                    value: e,
-                    child:  new Text(e),
-                  );
-                }).toList(),
-              ),
-            ),
-
             Input(
               width: Get.width /3,
               onChanged: (val)=> jobData.salary = int.tryParse(val),
@@ -207,7 +179,33 @@ class JobCtrl extends GetxController{
               obscureText: false,
               validator: Validations.validateSalary,
             ),
-          ],),
+              new SizedBox(height: 15.sp),
+          Center(
+            child: Obx(()=>CheckboxListTile(
+              subtitle: Text("Select the job type", style: bodyFontBold),
+                title: Text(typeJobIsByday.value ? "By day" : "By hour", style: subTitleFontBold),
+                secondary: Icon(typeJobIsByday.value ? CupertinoIcons.sun_dust : CupertinoIcons.clock, color:main_color),
+                controlAffinity: ListTileControlAffinity.trailing,
+                value: typeJobIsByday.value,
+                onChanged: (bool value){
+                  typeJobIsByday.value = value;
+                  update();
+                }
+              )
+            )
+          ),
+          new SizedBox(height: 15.sp),
+          FadeInDown(
+            child: Obx(()=>CheckboxListTile(
+                title: Text("Overtime", style: subTitleFontBold),
+                subtitle: Text("Your company offers overtime?", style: bodyFontBold),
+                secondary: Icon(Icons.money),
+                controlAffinity: ListTileControlAffinity.platform,
+                value: overtime.value,
+                onChanged: (bool value)=> overtime.value = value,
+              )
+            )
+          ),
 
           new SizedBox(height: 20.sp),
 

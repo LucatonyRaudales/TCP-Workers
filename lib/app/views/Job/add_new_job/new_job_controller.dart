@@ -17,6 +17,7 @@ class NewJobCtrl extends GetxController{
   final RoundedLoadingButtonController btnController = new RoundedLoadingButtonController();
   final TextEditingController name = TextEditingController();
   final TextEditingController salary = TextEditingController();
+  RxBool overtime = false.obs, typeJobIsByday = true.obs;
   String country;
   String state;
   String city;
@@ -31,20 +32,21 @@ class NewJobCtrl extends GetxController{
     city = va;
   }
 
-  void setNewJob({String type})async{
-    if(type == null ){
+  void setNewJob()async{
+    /*if(type == null ){
       btnController.reset();
       return MySnackBar.show(title: 'Error...', message: 'You have not selected the type of work', backgroundColor: Colors.red, icon: CupertinoIcons.multiply_circle);
-    }else{
+    }else{*/
       try{
         var encode = box.read('userData');
           UserModel userData = UserModel.fromJson(json.decode(encode));
       var response = await http.post(GlobalVariables.api + '/worker/jobs/setJob'
         ,body:{
           'name' : name.text,
-          'type': type,
+          'type': typeJobIsByday.value ? 'day' : 'hour',
           'salary' : salary.text,
           'address' : json.encode({'state' : state, 'city': city}),
+          "overtime": overtime.value.toString(),
           'user_employee': userData.user.id
         });
         switch (response.statusCode) {
@@ -69,6 +71,6 @@ class NewJobCtrl extends GetxController{
         MySnackBar.show(title: 'Error!', message: err.toString(), backgroundColor: Colors.red, icon: CupertinoIcons.multiply_circle);
         Timer(Duration(seconds: 3), ()=> btnController.reset());
       }
-    }
+    //}
   }
 }

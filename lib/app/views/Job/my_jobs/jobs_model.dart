@@ -18,6 +18,7 @@ class Job{
         this.type,
         this.salary,
         this.address,
+        this.overtime
     });
 
     String id;
@@ -26,6 +27,7 @@ class Job{
     String type;
     int salary;
     Address address;
+    bool overtime;
 
     factory Job.fromJson(Map<String, dynamic> json) => Job(
         id: json["_id"],
@@ -34,6 +36,7 @@ class Job{
         type: json["type"],
         salary: json["salary"],
         address: json["address"] == null ? null : Address.fromJson(json["address"]),
+        overtime:  json["overtime"] == null ? false : json["overtime"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -43,6 +46,7 @@ class Job{
         "type": type,
         "salary": salary,
         "address": address.toJson(),
+        "overtime": overtime
     };
 }
 

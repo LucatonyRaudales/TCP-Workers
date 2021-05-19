@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,36 +65,6 @@ class _NewJobPageState extends State<NewJobPage> {
 
           new SizedBox(height: 15.sp),
 
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-            Container(
-              width: Get.width /2.6,
-              padding: EdgeInsets.symmetric(horizontal: 5.sp),
-              decoration: BoxDecoration(
-                border: Border.all(color: typeSelected != null ? main_color : Colors.red),
-                borderRadius: BorderRadius.circular(25)
-              ),
-              child: DropdownButton(
-                isExpanded: true,
-                hint: new Text( typeSelected ?? 'Project by: ', style: bodyFont, textAlign: TextAlign.center),
-                dropdownColor: Colors.white,
-                style: subTitleFont,
-                elevation: 5,
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 30.sp,
-                value: typeSelected,
-                onChanged: (val) => setState(()=> typeSelected = val),
-                items: list.map((e){
-                  return DropdownMenuItem(
-                    value: e,
-                    child:  new Text(e),
-                  );
-                }).toList(),
-              ),
-            ),
-
             Input(
               width: Get.width /2,
               hintText: "Salary", 
@@ -103,9 +74,32 @@ class _NewJobPageState extends State<NewJobPage> {
               obscureText: false,
               validator: Validations.validateSalary,
             ),
-          ],),
-
           new SizedBox(height: 15.sp),
+          Center(
+            child: Obx(()=>CheckboxListTile(
+              subtitle: Text("Select the job type", style: bodyFontBold),
+                title: Text(ctrl.typeJobIsByday.value ? "By day" : "By hour", style: subTitleFontBold),
+                secondary: Icon(ctrl.typeJobIsByday.value ? CupertinoIcons.sun_dust : CupertinoIcons.clock, color:main_color),
+                controlAffinity: ListTileControlAffinity.trailing,
+                value: ctrl.typeJobIsByday.value,
+                onChanged: (bool value)=> setState(()=> ctrl.typeJobIsByday.value = value),
+              )
+            )
+          ),
+          new SizedBox(height: 15.sp),
+          !ctrl.typeJobIsByday.value ? 
+          FadeInDown(
+            child: Obx(()=>CheckboxListTile(
+                title: Text("Overtime", style: subTitleFontBold),
+                subtitle: Text("Your company offers overtime?", style: bodyFontBold),
+                secondary: Icon(Icons.money),
+                controlAffinity: ListTileControlAffinity.platform,
+                value: ctrl.overtime.value,
+                onChanged: (bool value)=> ctrl.overtime.value = value,
+              )
+            )
+          )
+          : Container(),
 
           CSCPicker(
             onCountryChanged: (value) {
@@ -130,7 +124,7 @@ class _NewJobPageState extends State<NewJobPage> {
               successColor: Colors.green,
               child: Text('Save', style: TextStyle(color: Colors.white)),
               controller: ctrl.btnController,
-              onPressed:()=> _formKey.currentState.validate() ? ctrl.setNewJob(type: typeSelected) : ctrl.btnController.stop(),
+              onPressed:()=> _formKey.currentState.validate() ? ctrl.setNewJob() : ctrl.btnController.stop(),
             ),
           ),
       ],),

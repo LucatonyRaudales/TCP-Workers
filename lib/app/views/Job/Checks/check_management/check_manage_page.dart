@@ -124,9 +124,15 @@ class _CheckManagementPageState extends State<CheckManagementPage> {
     Container(
       width:100,
       child: MySecondaryButton(
-      onTap: ()=> ctrl.disableCheck(),
-      text: "Delete"
-    )
+
+      text: "Delete",
+      onTap: ()=> ScaffoldMessenger.of(context)
+        .showSnackBar(
+          SnackBar(
+            content: Text("are you sure you want to delete this check?", style: bodyFontWhiteBold),
+            action: SnackBarAction(label: "Yes!", onPressed: ()=> ctrl.disableCheck())),
+          ),
+        ),
     ),
     SizedBox(height:30),
   ]);
