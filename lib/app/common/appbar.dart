@@ -17,7 +17,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return  AppBar(
       title: new Column(children:[
-        Text(title ??'Techno contructions plus'.toUpperCase(), style: subTitleWhiteFont),
+        Text(title ??'Workers'.toUpperCase(), style: subTitleWhiteFont),
         Text(title != null ? 'Workers' : 'by Techno Business Plus', style:minimalWhiteFont)
       ]),
       centerTitle: true,

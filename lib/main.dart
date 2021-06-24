@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       designSize: Size(360, 690),
       allowFontScaling: false,
       builder: () => GetMaterialApp(
-        title: 'Techno Construction Workers',
+        title: 'Workers by techno business plus',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: main_color,

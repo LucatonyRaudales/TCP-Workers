@@ -16,12 +16,12 @@ class SplashPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SlideInDown(
-                child: Text('Techno Construction Plus "Workers"',
+                child: Text('WORKERS',
                     textAlign: TextAlign.center, style: titleFont),
               ),
               FadeInLeftBig(
                   child: new Text(
-                'by Techno Business Plus',
+                'by techno business plus',
                 style: bodyFont,
                 textAlign: TextAlign.center,
               ))

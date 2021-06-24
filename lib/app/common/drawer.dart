@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:tcp_workers/app/Style/Colors.dart';
 import 'package:tcp_workers/app/Style/text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tcp_workers/app/views/Home/home_page.dart';
 import 'package:tcp_workers/app/views/Job/add_new_job/newJob_page.dart';
 import 'package:tcp_workers/app/views/signIn/login_controller.dart';
 import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
@@ -48,24 +47,31 @@ class _DrawerItemState extends State<DrawerItem> {
           height: Get.height,
           padding: EdgeInsets.symmetric(horizontal: 5.ssp, vertical: 25.ssp),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               new Column(
                 children: [
-                  new Text('Techno construction plus'.toUpperCase(),
+                  new Text('main menu'.toUpperCase(),
                       style: titleFont, textAlign: TextAlign.center),
                   SizedBox(height: 30),
                   new Container(
-                      height: 100.sp,
+                      height: 90.sp,
                       width: 100.sp,
                       child: new CircleAvatar(
                           backgroundColor: main_color,
-                          child: Icon(CupertinoIcons.person_crop_circle,
-                              size: 55.sp, color: Colors.white))),
+                          child: Icon(
+                            CupertinoIcons.person_crop_circle,
+                            size: 55.sp, color: Colors.white
+                            )
+                        )
+                    ),
+
+                  SizedBox(height: 15),
                   new Text(
                     user.user.firstName + ' ' + user.user.lastName,
                     style: titleFont,
                   ),
+
                   Container(
                     margin: EdgeInsets.only(top: 3.sp),
                     child: Row(
@@ -98,7 +104,6 @@ class _DrawerItemState extends State<DrawerItem> {
                         function: () => Get.back(),
                         icon: CupertinoIcons.home,
                         text: 'Home'),
-                    SizedBox(height: 15.ssp),
                     SizedBox(height: 15.ssp),
                     _drawerItem(
                         function: () => Get.to(NewJobPage()),
