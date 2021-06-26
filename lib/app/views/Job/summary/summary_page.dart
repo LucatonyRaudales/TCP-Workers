@@ -26,7 +26,7 @@ class _SummaryPageState extends State<SummaryPage> {
               title: 'Summary'.toUpperCase(),
             ),
             body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 10.sp),
                 child: range == null
                     ? selectRange(ctrl: ctrl, context: context)
                     : showDataSummary(ctrl: ctrl))));
@@ -38,6 +38,20 @@ class _SummaryPageState extends State<SummaryPage> {
     if (ctrl.isLoading)
       return Center(
         child: MyProgressBar(),
+      );
+    if (!ctrl.isLoading && ctrl.summaryData.checks.isEmpty)
+      return Center(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "No data to display...",
+              style: titleFont,
+            ),
+            SizedBox(height: 20,),
+            selectRange(ctrl: ctrl, context: context)
+          ],
+        ),
       );
     return SingleChildScrollView(
         child: Column(
@@ -103,26 +117,28 @@ class _SummaryPageState extends State<SummaryPage> {
         SizedBox(
           height: 12,
         ),
-        Obx(
-          () => CheckboxListTile(
-              value: ctrl.withOvertime.value,
-              activeColor: Colors.green[300],
-              checkColor: Colors.white,
-              onChanged: (status) {
-                ctrl.getSummary(range: range, status: status);
-                ctrl.withOvertime.value = status;
-              },
-              title: new Text(
-                "Overtime available",
-                style: subTitleFont,
+        !ctrl.jobData.overtime
+            ? SizedBox()
+            : Obx(
+                () => CheckboxListTile(
+                    value: ctrl.withOvertime.value,
+                    activeColor: Colors.green[300],
+                    checkColor: Colors.white,
+                    onChanged: (status) {
+                      ctrl.getSummary(range: range, status: status);
+                      ctrl.withOvertime.value = status;
+                    },
+                    title: new Text(
+                      "Overtime available",
+                      style: subTitleFont,
+                    ),
+                    subtitle: new Text(
+                      ctrl.withOvertime.value
+                          ? "the paryment is calculated with overtime"
+                          : "the payment is not calculated with overtime",
+                      style: bodyFont,
+                    )),
               ),
-              subtitle: new Text(
-                ctrl.withOvertime.value
-                    ? "the paryment is calculated with overtime"
-                    : "the payment is not calculated with overtime",
-                style: bodyFont,
-              )),
-        ),
         SizedBox(
           height: 12,
         ),
@@ -205,20 +221,25 @@ class _SummaryPageState extends State<SummaryPage> {
                         ),
                       ],
                     ),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        new Text(
-                          checks[index].payment.toString() + " USD",
-                          style: subTitleFontBold,
-                        ),
-                        checks[index].paid
-                            ? new Text('Salary (\$)',
-                                style: bodyFont,
-                                overflow: TextOverflow.ellipsis)
-                            : SizedBox(),
-                      ],
+                    trailing: Container(
+                      width: Get.width / 5.5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Text(
+                            checks[index].payment.toString() + " USD",
+                            style: subTitleFontBold,
+                            overflow: TextOverflow.fade,
+                            textAlign: TextAlign.center,
+                          ),
+                          checks[index].paid
+                              ? new Text('Paid',
+                                  style: TextStyle(fontSize: 12.sp, color: Colors.green),
+                                  overflow: TextOverflow.ellipsis)
+                              : SizedBox(),
+                        ],
+                      ),
                     ),
                   )));
         });

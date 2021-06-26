@@ -42,7 +42,7 @@ class SummaryController extends GetxController {
           isLoading = false;
           break;
         default:
-          summaryData = Summary.fromJson({});
+          //summaryData = Summary.fromJson({});
           isLoading = false;
           break;
       }

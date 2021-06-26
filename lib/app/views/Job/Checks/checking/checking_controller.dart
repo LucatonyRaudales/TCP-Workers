@@ -138,6 +138,7 @@ class CheckingCtrl extends GetxController {
         'break_minutes': breakTime.value.toString(),
         'offset': offset.toString(),
         'salary': jobData.salary.toString(),
+        "overtime" : jobData.overtime.toString(),
         'payment': payment.value.toString()
       });
 

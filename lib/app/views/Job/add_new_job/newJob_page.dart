@@ -30,7 +30,7 @@ class _NewJobPageState extends State<NewJobPage> {
   Widget build(BuildContext context) {
     return GetBuilder<NewJobCtrl>(
       init: NewJobCtrl(),
-      builder: (_){
+      builder: (_) {
         return Scaffold(
           appBar: MyAppBar(),
           body: new Center(
@@ -44,67 +44,82 @@ class _NewJobPageState extends State<NewJobPage> {
     );
   }
 
-  Widget _form({NewJobCtrl ctrl}){
+  Widget _form({NewJobCtrl ctrl}) {
     var _formKey = GlobalKey<FormState>();
 
     return Form(
       key: _formKey,
-      child: new Column(children: [
-        new Text('new job'.toUpperCase(), style: titleFont,),
-
-        new SizedBox(height: 25.ssp),
-
-        Input(
-            hintText: "Name", 
-            icon: CupertinoIcons.textformat, 
+      child: new Column(
+        children: [
+          new Text(
+            'new job'.toUpperCase(),
+            style: titleFont,
+          ),
+          new SizedBox(height: 25.ssp),
+          Input(
+            hintText: "Name",
+            icon: CupertinoIcons.textformat,
             controller: ctrl.name,
             textInputType: TextInputType.text,
             obscureText: false,
             validator: Validations.validateName,
           ),
-
           new SizedBox(height: 15.sp),
-
-            Input(
-              width: Get.width /2,
-              hintText: "Salary", 
-              icon: CupertinoIcons.money_dollar, 
-              controller: ctrl.salary,
-              textInputType: TextInputType.number,
-              obscureText: false,
-              validator: Validations.validateSalary,
-            ),
-          new SizedBox(height: 15.sp),
-          Center(
-            child: Obx(()=>CheckboxListTile(
-              subtitle: Text("Select the job type", style: bodyFontBold),
-                title: Text(ctrl.typeJobIsByday.value ? "By day" : "By hour", style: subTitleFontBold),
-                secondary: Icon(ctrl.typeJobIsByday.value ? CupertinoIcons.sun_dust : CupertinoIcons.clock, color:main_color),
-                controlAffinity: ListTileControlAffinity.trailing,
-                value: ctrl.typeJobIsByday.value,
-                onChanged: (bool value)=> setState(()=> ctrl.typeJobIsByday.value = value),
-              )
-            )
+          Input(
+            width: Get.width / 2,
+            hintText: "Salary",
+            icon: CupertinoIcons.money_dollar,
+            controller: ctrl.salary,
+            textInputType: TextInputType.number,
+            obscureText: false,
+            validator: Validations.validateSalary,
           ),
           new SizedBox(height: 15.sp),
-          !ctrl.typeJobIsByday.value ? 
-          FadeInDown(
-            child: Obx(()=>CheckboxListTile(
-                title: Text("Overtime", style: subTitleFontBold),
-                subtitle: Text("Your company offers overtime?", style: bodyFontBold),
-                secondary: Icon(Icons.money),
-                controlAffinity: ListTileControlAffinity.platform,
-                value: ctrl.overtime.value,
-                onChanged: (bool value)=> ctrl.overtime.value = value,
-              )
-            )
-          )
-          : Container(),
-
+          Obx(() => CheckboxListTile(
+                subtitle: Text("payment is based on days worked", style: bodyFontBold),
+                title: Text("By day", style: subTitleFontBold),
+                secondary: Icon(CupertinoIcons.sun_dust, color: main_color),
+                controlAffinity: ListTileControlAffinity.trailing,
+                value: ctrl.typeJobIsByday.value,
+                onChanged: (bool value) {
+                    ctrl.typeJobIsByHour.value = false;
+                    ctrl.typeJobIsByday.value = value;
+                    ctrl.overtime.value = false;
+                },
+              )),
+          new SizedBox(height: 15.sp),
+          Obx(() => CheckboxListTile(
+                subtitle: Text("pay is based on hours worked", style: bodyFontBold),
+                title: Text("By hour", style: subTitleFontBold),
+                secondary: Icon(CupertinoIcons.clock, color: main_color),
+                controlAffinity: ListTileControlAffinity.trailing,
+                value: ctrl.typeJobIsByHour.value,
+                onChanged: (bool value) {
+                    ctrl.typeJobIsByHour.value = value;
+                    ctrl.typeJobIsByday.value = false;
+                    ctrl.overtime.value = false;
+                },
+              )),
+          new SizedBox(height: 15.sp),
+          
+          Obx(() => ctrl.typeJobIsByHour.value
+              ? FadeInDown(
+                  child: CheckboxListTile(
+                        title: Text("Overtime", style: subTitleFontBold),
+                        subtitle: Text("Your company offers overtime?",
+                            style: bodyFontBold),
+                        secondary: Icon(Icons.money),
+                        controlAffinity: ListTileControlAffinity.platform,
+                        value: ctrl.overtime.value,
+                        onChanged: (bool value) => ctrl.overtime.value = value,
+                      ))
+              : Container(),
+              ),
           CSCPicker(
             onCountryChanged: (value) {
-            ctrl.selectCountry(value);
-          },
+              ctrl.selectCountry(value);
+            },
+
             ///triggers once state selected in dropdown
             onStateChanged: (value) {
               ctrl.selectState(value);
@@ -115,19 +130,21 @@ class _NewJobPageState extends State<NewJobPage> {
               ctrl.selectCity(value);
             },
           ),
-
           Padding(
-            padding: EdgeInsets.only(top:25.sp),
+            padding: EdgeInsets.only(top: 25.sp),
             child: RoundedLoadingButton(
               color: main_color,
               errorColor: Colors.red,
               successColor: Colors.green,
               child: Text('Save', style: TextStyle(color: Colors.white)),
               controller: ctrl.btnController,
-              onPressed:()=> _formKey.currentState.validate() ? ctrl.setNewJob() : ctrl.btnController.stop(),
+              onPressed: () => _formKey.currentState.validate()
+                  ? ctrl.setNewJob()
+                  : ctrl.btnController.stop(),
             ),
           ),
-      ],),
+        ],
+      ),
     );
   }
 }
