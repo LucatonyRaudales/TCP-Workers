@@ -26,7 +26,7 @@ class CheckingCtrl extends GetxController {
   @override
   void onInit() {
     print(Get.width);
-    //isJobByday();
+    isJobByday();
     super.onInit();
   }
 
@@ -71,6 +71,9 @@ class CheckingCtrl extends GetxController {
   }
 
   void isJobByday() async {
+    if (jobData.type != "day") {
+      return null;
+    }
     hourWorked.value = 8.0;
     breakTime.value = 60;
     rangeDefault = TimeRange(
@@ -138,7 +141,7 @@ class CheckingCtrl extends GetxController {
         'break_minutes': breakTime.value.toString(),
         'offset': offset.toString(),
         'salary': jobData.salary.toString(),
-        "overtime" : jobData.overtime.toString(),
+        "overtime": jobData.overtime.toString(),
         'payment': payment.value.toString()
       });
 
@@ -158,7 +161,7 @@ class CheckingCtrl extends GetxController {
               title:
                   '${DateFormat.yMMMMEEEEd().format(date.value)} has been checked!',
               message:
-                  'we suggest you select another day or edit it in the check manager',
+                  'we suggest you select another day or edit it in the check management',
               backgroundColor: Colors.orange,
               icon: CupertinoIcons.exclamationmark_triangle);
           Timer(Duration(seconds: 3), () => btnController.reset());

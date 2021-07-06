@@ -13,21 +13,21 @@ class JobsListCtrl extends GetxController{
   final box = GetStorage();
   @override
   void onInit() {
-    getJobsList();
+    getJobsList(mystatus: status);
     super.onInit();
   }
 
   void getjobsAfterUpdate({String mystatus}){
     status = mystatus;
-    getJobsList();
+    getJobsList(mystatus: status);
   }
   
-  Future getJobsList()async{
+  Future getJobsList({String mystatus})async{
     print(status);
     try{
       var userDecode = json.decode(box.read('userData'));
       UserModel user = UserModel.fromJson(userDecode);
-      var response = await http.get(GlobalVariables.api + '/worker/getMyJobs/' + user.user.id + '?status=$status');
+      var response = await http.get(GlobalVariables.api + '/worker/getMyJobs/' + user.user.id + '?status=$mystatus');
       print(response.body);
       switch(response.statusCode){
         case 200:

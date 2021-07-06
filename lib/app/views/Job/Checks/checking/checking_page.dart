@@ -108,7 +108,7 @@ class _CheckinPageState extends State<CheckinPage> {
         color: main_color,
         errorColor: Colors.red,
         successColor: Colors.green,
-        child: Text('Check today'.toUpperCase(),
+        child: Text('Check day'.toUpperCase(),
             style: TextStyle(color: Colors.white)),
         controller: ctrl.btnController,
         onPressed: () => ctrl.setCheck(timeFromUI: range),

@@ -13,10 +13,12 @@ import 'package:tcp_workers/app/common/variables.dart';
 import 'package:tcp_workers/app/models/data_paid.dart';
 import 'package:tcp_workers/app/repository/payment.dart';
 import 'package:tcp_workers/app/views/Home/home_page.dart';
+import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 import '../../Style/Colors.dart';
 import '../../Style/text.dart';
 import '../../common/textFormField.dart';
 import '../../common/validations.dart';
+import 'my_jobs/jobList_page.dart';
 import 'my_jobs/jobsList_controller.dart';
 import 'my_jobs/jobs_model.dart';
 import 'package:http/http.dart' as http;
@@ -40,6 +42,7 @@ class JobCtrl extends GetxController {
   @override
   void onInit() {
     jobData = Get.arguments;
+    print(jobData.name);
     getTotalPaid(jobID: jobData.id);
     showButton.value = false;
     super.onInit();
@@ -65,11 +68,15 @@ class JobCtrl extends GetxController {
         case 200:
           print('bien hecho');
           btnController.success();
+          showButton.value = false;
+          Get.put(JobsListCtrl());
+          JobsListCtrl jobsListCtrl = Get.find();
+          jobsListCtrl.getJobsList();
           Timer(
               Duration(
                 seconds: 2,
               ),
-              () => Get.to(HomePage(),
+              () => Get.to(() => SplashPage(),
                   transition: Transition.leftToRightWithFade));
           break;
         case 500:
