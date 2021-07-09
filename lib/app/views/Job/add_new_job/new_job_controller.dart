@@ -51,8 +51,7 @@ class NewJobCtrl extends GetxController {
       btnController.error();
       MySnackBar.show(
           title: 'Error!',
-          message:
-              'You have not selected a type of work',
+          message: 'You have not selected a type of work',
           backgroundColor: Colors.red,
           icon: CupertinoIcons.multiply_circle);
       Timer(Duration(seconds: 3), () => btnController.reset());
@@ -79,6 +78,14 @@ class NewJobCtrl extends GetxController {
               backgroundColor: Colors.green,
               icon: CupertinoIcons.checkmark_alt_circle);
           Timer(Duration(seconds: 3), () => Get.offAll(HomePage()));
+          break;
+        case 401:
+          btnController.stop();
+          MySnackBar.show(
+              title: "Whoops I'm sorry",
+              message: 'you have reached the limit of jobs with the $typeJob type',
+              backgroundColor: Colors.orange,
+              icon: CupertinoIcons.exclamationmark_circle);
           break;
         case 500:
           btnController.error();

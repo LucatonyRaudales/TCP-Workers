@@ -164,6 +164,15 @@ class JobCtrl extends GetxController {
           btnController.success();
           Timer(Duration(seconds: 3), () => Get.back());
           break;
+
+        case 401:
+          btnController.stop();
+          MySnackBar.show(
+              title: "Whoops I'm sorry",
+              message: 'you have reached the limit of jobs with the ${jobData.type} type',
+              backgroundColor: Colors.orange,
+              icon: CupertinoIcons.exclamationmark_circle);
+         break;
         case 500:
           MySnackBar.show(
               title: 'Error!',
