@@ -32,8 +32,8 @@ class SummaryController extends GetxController {
     update();
     dateRange.value = range;
     try {
-      var res = await http.get(GlobalVariables.api +
-          "/worker/summary/getsummary/${jobData.id}?from=${range.start.toUtc()}&to=${range.end.toUtc()}&overtime=$status");
+      var res = await http.get(Uri.parse(GlobalVariables.api +
+          "/worker/summary/getsummary/${jobData.id}?from=${range.start.toUtc()}&to=${range.end.toUtc()}&overtime=$status"));
       switch (res.statusCode) {
         case 200:
           print('trajo la data bien');

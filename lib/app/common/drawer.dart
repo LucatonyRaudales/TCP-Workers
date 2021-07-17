@@ -72,6 +72,12 @@ class _DrawerItemState extends State<DrawerItem> {
                     style: titleFont,
                   ),
 
+                  SizedBox(height: 5),
+                  new Text(
+                    '@' + user.user.nickName,
+                    style: bodyFontBold,
+                  ),
+
                   Container(
                     margin: EdgeInsets.only(top: 3.sp),
                     child: Row(

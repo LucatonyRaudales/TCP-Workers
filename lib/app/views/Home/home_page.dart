@@ -11,6 +11,7 @@ import 'package:tcp_workers/app/common/home_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tcp_workers/app/common/progressBar.dart';
 import 'package:tcp_workers/app/views/Job/my_jobs/jobList_page.dart';
+import 'package:tcp_workers/app/views/chat/conversations_page/chats_page.dart';
 import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
 
 import 'home_controller.dart';
@@ -32,6 +33,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: MyAppBar(
         actions: [
+          new IconButton(
+            icon: Icon(Icons.message_outlined),
+            onPressed: () => Get.to(()=> ChatPage())
+          ),
           new IconButton(
             icon: Icon(CupertinoIcons.square_arrow_right),
             onPressed: () => ScaffoldMessenger.of(context).showSnackBar(

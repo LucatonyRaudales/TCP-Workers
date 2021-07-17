@@ -22,8 +22,8 @@ class SignUpCtrl extends GetxController {
   Future<bool> validateNickName(String nick) async {
     try {
       var response;
-      response =
-          await http.get(GlobalVariables.api + "/worker/verifyUserName/$nick");
+      response = await http
+          .get(Uri.parse(GlobalVariables.api + "/worker/verifyUserName/$nick"));
       switch (response.body) {
         case 'true':
           return true;
@@ -54,8 +54,8 @@ class SignUpCtrl extends GetxController {
             backgroundColor: main_color,
             icon: CupertinoIcons.person_crop_circle_fill_badge_xmark);
       }
-      var response =
-          await http.post(GlobalVariables.api + '/worker/signup', body: {
+      var response = await http
+          .post(Uri.parse(GlobalVariables.api + '/worker/signup'), body: {
         'firstName': fName,
         'lastName': lName,
         'nickName': nName,
@@ -125,16 +125,17 @@ class SignUpCtrl extends GetxController {
       if (nName == null) {
         nName = user.user.nickName;
       }
-      var response = await http
-          .put(GlobalVariables.api + '/employee/UpdateEmploye', body: {
-        'employeeID': user.user.id,
-        'firstName': fName,
-        'lastName': lName,
-        'nickName': nName,
-        'phone': phone,
-        'country': country,
-        'email': email,
-      });
+      var response = await http.put(
+          Uri.parse(GlobalVariables.api + '/employee/UpdateEmploye'),
+          body: {
+            'employeeID': user.user.id,
+            'firstName': fName,
+            'lastName': lName,
+            'nickName': nName,
+            'phone': phone,
+            'country': country,
+            'email': email,
+          });
       switch (response.statusCode) {
         case 200:
           print(response.body);

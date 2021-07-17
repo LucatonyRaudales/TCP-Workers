@@ -32,10 +32,10 @@ class CheckingCtrl extends GetxController {
 
   void checkifTodayIsChecked() async {
     try {
-      var response = await http.get(GlobalVariables.api +
+      var response = await http.get(Uri.parse(GlobalVariables.api +
           '/worker/check/verifyToday/' +
           jobData.id +
-          "?date=${date.value}");
+          "?date=${date.value}"));
       switch (response.statusCode) {
         case 200:
           if (response.body == 'false') {
@@ -126,7 +126,7 @@ class CheckingCtrl extends GetxController {
       /* var userDecode = json.decode(box.read('userData'));
       UserModel user = UserModel.fromJson(userDecode); */
       var response = await http
-          .post(GlobalVariables.api + '/worker/check/setCheck', body: {
+          .post(Uri.parse(GlobalVariables.api + '/worker/check/setCheck'), body: {
         'jobID': jobData.id,
         /* 
         'userID' : user.user.id, */

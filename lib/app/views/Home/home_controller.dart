@@ -11,7 +11,7 @@ class HomeCtrl{
     try{
       var decode = json.decode(box.read('userData'));
       UserModel user = UserModel.fromJson(decode);
-      var response = await http.get(GlobalVariables.api +'/worker/dashboardData/' + user.user.id);
+      var response = await http.get(Uri.parse(GlobalVariables.api +'/worker/dashboardData/' + user.user.id));
       return json.decode(response.body);
     }catch(err){
       print('Errorase + $err');

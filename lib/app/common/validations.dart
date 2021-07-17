@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:tcp_workers/app/common/variables.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,6 +16,16 @@ class Validations {
   static String validateName(String value) {
     if (value.length < 2) {
       return 'Please enter a valid data';
+    }
+    return null;
+  }
+
+  static String validateNickName(String value) {
+    if (value.length < 4) {
+      return 'Please enter a valid nickName';
+    }
+    if (!GetUtils.isUsername(value)) {
+      return 'Please enter a valid nickName';
     }
     return null;
   }

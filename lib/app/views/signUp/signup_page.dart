@@ -90,7 +90,7 @@ class SignUpPage extends StatelessWidget {
                     },
                     textInputType: TextInputType.text,
                     obscureText: false,
-                    validator: Validations.validateName,
+                    validator: Validations.validateNickName,
                   ),
                   new SizedBox(
                     height: 15.sp,

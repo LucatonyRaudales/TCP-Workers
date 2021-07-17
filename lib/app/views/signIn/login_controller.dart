@@ -18,7 +18,8 @@ class LoginCtrl extends GetxController {
 
   void loginWithEmail({String email, String password}) async {
     try {
-      var response = await http.post(GlobalVariables.api + '/worker/login',
+      var response = await http.post(
+          Uri.parse(GlobalVariables.api + '/worker/login'),
           body: {'email': email, 'password': password, 'userType': 'em'});
       switch (response.statusCode) {
         case 200:

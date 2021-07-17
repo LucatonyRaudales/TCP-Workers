@@ -27,7 +27,7 @@ class JobsListCtrl extends GetxController{
     try{
       var userDecode = json.decode(box.read('userData'));
       UserModel user = UserModel.fromJson(userDecode);
-      var response = await http.get(GlobalVariables.api + '/worker/getMyJobs/' + user.user.id + '?status=$mystatus');
+      var response = await http.get(Uri.parse(GlobalVariables.api + '/worker/getMyJobs/' + user.user.id + '?status=$mystatus'));
       print(response.body);
       switch(response.statusCode){
         case 200:

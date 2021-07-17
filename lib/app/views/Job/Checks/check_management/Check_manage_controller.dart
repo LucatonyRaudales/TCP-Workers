@@ -63,7 +63,7 @@ class CheckManagementController extends GetxController {
     print(date.toIso8601String());
     print(date.toUtc());
     try{
-      var response = await http.get(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.toUtc()}');
+      var response = await http.get(Uri.parse(GlobalVariables.api + '/worker/check/getCheckByDate/${jobData.id}?date=${date.toUtc()}'));
       switch (response.statusCode) {
         case 200:
         CheckManagement check= CheckManagement.fromJson(json.decode(response.body));
@@ -92,7 +92,7 @@ class CheckManagementController extends GetxController {
     }
     print('aqui pasa mi amorcita');
     try{
-      var response = await http.put(GlobalVariables.api + '/worker/check/updateCheck',
+      var response = await http.put(Uri.parse(GlobalVariables.api + '/worker/check/updateCheck'),
       body: {
         'jobID' : jobData.id,
         'checkID' : checkData.id,

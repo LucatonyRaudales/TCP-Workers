@@ -12,7 +12,7 @@ class PaymentRepository{
    DataPaid data = DataPaid();
     String url = GlobalVariables.api + "/worker/payment/getTotalPaid/$jobID";
     try{
-      var res = await http.get(url);
+      var res = await http.get(Uri.parse(url));
         var decode = json.decode(res.body);
       if(decode.isNotEmpty){
         data = DataPaid.fromJson(decode[0]);
@@ -28,7 +28,7 @@ class PaymentRepository{
   Future<ListCheck> getUnpaidDays({String jobID})async{
     String url = GlobalVariables.api + "/worker/payment/getUnpaidDays/$jobID";
     try{
-      var res = await http.get(url);
+      var res = await http.get(Uri.parse(url));
       if(res.statusCode == 200){
         var decode = json.decode(res.body);
         checks = ListCheck.fromJson(decode[0]);
@@ -42,7 +42,7 @@ class PaymentRepository{
 
   Future<bool> registerPay({List<String> checkDays, String jobID})async{
     String url = GlobalVariables.api + "/worker/payment/payDays";
-    var res = await http.put(url, body: {
+    var res = await http.put(Uri.parse(url), body: {
       "jobID": jobID,
       "listDays": json.encode(checkDays)
     });

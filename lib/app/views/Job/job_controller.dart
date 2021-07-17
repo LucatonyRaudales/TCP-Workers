@@ -61,7 +61,7 @@ class JobCtrl extends GetxController {
   void markAsFinished() async {
     try {
       var res = await http.put(
-          GlobalVariables.api + '/worker/jobs/changeStatusJob',
+          Uri.parse(GlobalVariables.api + '/worker/jobs/changeStatusJob'),
           body: {'jobID': jobData.id, 'status': 'finished'});
       print(res.statusCode);
       switch (res.statusCode) {
@@ -139,16 +139,17 @@ class JobCtrl extends GetxController {
       return null;
     }
     try {
-      var response =
-          await http.put(GlobalVariables.api + '/worker/jobs/updatejob', body: {
-        'jobID': jobData.id,
-        'name': jobData.name,
-        'type': jobData.type,
-        "overtime": jobData.overtime.toString(),
-        'salary': jobData.salary.toString(),
-        'address': json.encode(
-            {'state': jobData.address.state, 'city': jobData.address.city}),
-      });
+      var response = await http.put(
+          Uri.parse(GlobalVariables.api + '/worker/jobs/updatejob'),
+          body: {
+            'jobID': jobData.id,
+            'name': jobData.name,
+            'type': jobData.type,
+            "overtime": jobData.overtime.toString(),
+            'salary': jobData.salary.toString(),
+            'address': json.encode(
+                {'state': jobData.address.state, 'city': jobData.address.city}),
+          });
       switch (response.statusCode) {
         case 200:
           Get.put(JobsListCtrl());
@@ -169,10 +170,11 @@ class JobCtrl extends GetxController {
           btnController.stop();
           MySnackBar.show(
               title: "Whoops I'm sorry",
-              message: 'you have reached the limit of jobs with the ${jobData.type} type',
+              message:
+                  'you have reached the limit of jobs with the ${jobData.type} type',
               backgroundColor: Colors.orange,
               icon: CupertinoIcons.exclamationmark_circle);
-         break;
+          break;
         case 500:
           MySnackBar.show(
               title: 'Error!',

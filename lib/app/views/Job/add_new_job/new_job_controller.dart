@@ -61,7 +61,7 @@ class NewJobCtrl extends GetxController {
       var encode = box.read('userData');
       UserModel userData = UserModel.fromJson(json.decode(encode));
       var response =
-          await http.post(GlobalVariables.api + '/worker/jobs/setJob', body: {
+          await http.post(Uri.parse(GlobalVariables.api + '/worker/jobs/setJob'), body: {
         'name': name.text,
         'type': typeJob,
         'salary': salary.text,

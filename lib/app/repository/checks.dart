@@ -4,7 +4,7 @@ import 'package:tcp_workers/app/common/variables.dart';
 class ChecksRepository {
   Future<bool> disableCheck({String jobID, String checkID})async{
     try {
-      var res = await http.put(GlobalVariables.api + "/worker/check/disableCheck",
+      var res = await http.put(Uri.parse(GlobalVariables.api + "/worker/check/disableCheck"),
       body: {
         "jobID": jobID,
         "checkID": checkID
