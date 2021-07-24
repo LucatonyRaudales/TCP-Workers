@@ -34,9 +34,8 @@ class _HomePageState extends State<HomePage> {
       appBar: MyAppBar(
         actions: [
           new IconButton(
-            icon: Icon(Icons.message_outlined),
-            onPressed: () => Get.to(()=> ChatPage())
-          ),
+              icon: Icon(Icons.message_outlined),
+              onPressed: () => Get.to(() => ChatPage())),
           new IconButton(
             icon: Icon(CupertinoIcons.square_arrow_right),
             onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
@@ -83,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 20.sp,
                     ),
-                   // tasks()
+                    // tasks()
                   ],
                 ),
               ),

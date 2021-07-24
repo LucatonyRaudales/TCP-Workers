@@ -22,7 +22,7 @@ class _ChatUsersListState extends State<ChatUsersList> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> Get.to(()=> ChatDetail()),
+      onTap: () => Get.to(() => ChatDetail()),
       child: Container(
         padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Row(
@@ -31,7 +31,8 @@ class _ChatUsersListState extends State<ChatUsersList> {
               child: Row(
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: NetworkImage("https://images.chicmagazine.com.mx/_062oIVC8E9OIjKTQN15qOL_4Cg=/958x596/uploads/media/2020/09/04/brad-pitt-llevo-novia-caso.jpg"),
+                    backgroundImage: NetworkImage(
+                        "https://images.chicmagazine.com.mx/_062oIVC8E9OIjKTQN15qOL_4Cg=/958x596/uploads/media/2020/09/04/brad-pitt-llevo-novia-caso.jpg"),
                     maxRadius: 30,
                   ),
                   SizedBox(

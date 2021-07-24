@@ -6,6 +6,9 @@ class MyDialog{
     showDialog(
         context: context,
     builder: (_) => new AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
           title: new Text(title, style: subTitleFont,  textAlign: TextAlign.center,),
           //shape: CircleBorder(BorderSide.circular(25)),
           content: content,
