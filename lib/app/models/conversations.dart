@@ -6,7 +6,7 @@ String conversationsToJson(List<Conversation> data) => json.encode(List<dynamic>
 class Conversation {
     Conversation({
         this.id,
-        this.participants,
+        this.users,
         this.createAt,
         this.enable,
         this.deletedAt,
@@ -14,7 +14,7 @@ class Conversation {
     });
 
     String id;
-    List<Participant> participants;
+    List<Participant> users;
     int createAt;
     bool enable;
     int deletedAt;
@@ -22,7 +22,7 @@ class Conversation {
 
     factory Conversation.fromJson(Map<String, dynamic> json) => Conversation(
         id: json["_id"],
-        participants: List<Participant>.from(json["participants"].map((x) => Participant.fromJson(x))),
+        users: List<Participant>.from(json["users"].map((x) => Participant.fromJson(x))),
         createAt: json["create_at"],
         enable: json["enable"],
         deletedAt: json["deleted_at"],
@@ -31,7 +31,7 @@ class Conversation {
 
     Map<String, dynamic> toJson() => {
         "_id": id,
-        "participants": List<dynamic>.from(participants.map((x) => x.toJson())),
+        "users": List<dynamic>.from(users.map((x) => x.toJson())),
         "create_at": createAt,
         "enable": enable,
         "deleted_at": deletedAt,

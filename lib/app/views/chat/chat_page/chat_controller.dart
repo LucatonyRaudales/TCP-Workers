@@ -104,7 +104,7 @@ class ChatController extends GetxController {
   }
 
   void getMessages() async {
-    ChatRepository().getMessages().then((value) => print(value));
+    ChatRepository().getMessages().then((value) => messages = value);
   }
 
   @override

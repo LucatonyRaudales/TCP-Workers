@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:tcp_workers/app/views/chat/chat_page/chat_bindings.dart';
 import 'package:tcp_workers/app/views/chat/chat_page/chat_detail.dart';
 
@@ -89,77 +90,85 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       ),
                     ),
-                    ListView.builder(
-                      itemCount: _ctrl.conversations.length,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(top: 16),
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => Get.to(() => ChatDetail(), binding: ChatBinding(), arguments: {"chatID" : _ctrl.conversations[index].id, "user" : _ctrl.user}),
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                left: 16, right: 16, top: 10, bottom: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Row(
-                                    children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            "https://images.chicmagazine.com.mx/_062oIVC8E9OIjKTQN15qOL_4Cg=/958x596/uploads/media/2020/09/04/brad-pitt-llevo-novia-caso.jpg"),
-                                        maxRadius: 30,
-                                      ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(_ctrl.conversations[index]
-                                                  .participants[0].username
-                                                  .toString()),
-                                              SizedBox(
-                                                height: 6,
-                                              ),
-                                              Text(
-                                                DateTime.fromMillisecondsSinceEpoch(
-                                                        _ctrl
-                                                            .conversations[
-                                                                index]
-                                                            .createAt)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color:
-                                                        Colors.grey.shade500),
-                                              ),
-                                            ],
+                    Obx(() {
+                      return ListView.builder(
+                        itemCount: _ctrl.conversations.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(top: 16),
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () => Get.to(() => ChatDetail(),
+                                binding: ChatBinding(),
+                                arguments: {
+                                  "chatID": _ctrl.conversations[index].id,
+                                  "user": _ctrl.user
+                                }),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: 16, right: 16, top: 10, bottom: 10),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              "https://images.chicmagazine.com.mx/_062oIVC8E9OIjKTQN15qOL_4Cg=/958x596/uploads/media/2020/09/04/brad-pitt-llevo-novia-caso.jpg"),
+                                          maxRadius: 30,
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            color: Colors.transparent,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(_ctrl.conversations[index]
+                                                    .users[0].username
+                                                    .toString()),
+                                                SizedBox(
+                                                  height: 6,
+                                                ),
+                                                Text(
+                                                  DateFormat.yMEd().format(DateTime
+                                                          .fromMillisecondsSinceEpoch(
+                                                              _ctrl
+                                                                  .conversations[
+                                                                      index]
+                                                                  .createAt))
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color:
+                                                          Colors.grey.shade500),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  _ctrl.conversations[index].createAt
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: true
-                                          ? Colors.pink
-                                          : Colors.grey.shade500),
-                                ),
-                              ],
+                                  Text(
+                                    _ctrl.conversations[index].createAt
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: true
+                                            ? Colors.pink
+                                            : Colors.grey.shade500),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+                    })
                   ],
                 ),
               ),

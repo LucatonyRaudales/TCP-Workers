@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tcp_workers/app/common/dialog.dart';
+import 'package:tcp_workers/app/common/snackbar.dart';
 import 'package:tcp_workers/app/common/validations.dart';
 import 'package:tcp_workers/app/models/conversations.dart';
 import 'package:tcp_workers/app/repository/chat.dart';
@@ -11,12 +12,11 @@ import 'package:get/get.dart';
 import 'package:tcp_workers/app/views/signIn/user_model.dart';
 
 class ConversationController extends GetxController {
-  List<Conversation> conversations = [];
+  RxList<Conversation> conversations = RxList<Conversation>();
   ChatRepository _repository = ChatRepository();
   final box = GetStorage();
   UserModel user;
-
-  RxBool findUser = false.obs;
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -54,7 +54,7 @@ class ConversationController extends GetxController {
           ),
         ),
         actions: [
-          findUser.value
+          Obx(() => isLoading.value
               ? CircularProgressIndicator()
               : ElevatedButton.icon(
                   onPressed: () {
@@ -63,13 +63,23 @@ class ConversationController extends GetxController {
                     }
                   },
                   icon: Icon(Icons.search),
-                  label: Text("Find"))
+                  label: Text("Find")))
         ]);
   }
 
   void findUserAndCreateChat({String userToContact}) {
     try {
-      _repository.setNewConversation(userToContact: userToContact);
+      isLoading.value = true;
+      _repository
+          .setNewConversation(userToContact: userToContact, currentUser: user)
+          .then((value) {
+        if (value.id != null) {
+          conversations.add(value);
+        } else {
+          MySnackBar.show(title: 'User not found', message: "insert a valid username to contact", backgroundColor: Colors.amber, icon: Icons.verified_user_outlined);
+        }
+          isLoading.value = false;
+      });
     } catch (e) {
       print("error findUserAndCreateChat: $e");
     }
@@ -80,7 +90,7 @@ class ConversationController extends GetxController {
     user = UserModel.fromJson(decode);
     _repository.getConversations(user: user).then((value) {
       print(value);
-      conversations = value;
+      conversations.value = value;
       update();
     });
   }
