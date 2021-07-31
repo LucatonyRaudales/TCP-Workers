@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 
 List<Message> messagesFromJson(String str) =>
     List<Message>.from(json.decode(str).map((x) => Message.fromJson(x)));
 
 String messagesToJson(List<Message> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
+/*
 class Message {
   Message({
     this.id,
@@ -37,3 +38,4 @@ class Message {
         "content": content,
       };
 }
+*/

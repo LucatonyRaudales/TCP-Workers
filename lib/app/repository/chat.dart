@@ -6,6 +6,7 @@ import 'package:tcp_workers/app/models/conversations.dart';
 import 'package:http/http.dart' as http;
 import 'package:tcp_workers/app/models/messages.dart';
 import 'package:tcp_workers/app/views/signIn/user_model.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 
 class ChatRepository {
     RxBool isLoading = false.obs;
@@ -30,7 +31,7 @@ class ChatRepository {
       var response = await http.post(
           Uri.parse(GlobalVariables.api + "/chat/setNewConversation/"),
           body: {
-            "findUser": "Bnito",
+            "findUser": userToContact,
             "currentUser": currentUser.user.nickName,
             "createAt": DateTime.now().millisecondsSinceEpoch.toString()
           });
@@ -55,4 +56,7 @@ class ChatRepository {
       return messagesFromJson("");
     }
   }
+
+
+  
 }

@@ -75,6 +75,7 @@ class ConversationController extends GetxController {
           .then((value) {
         if (value.id != null) {
           conversations.add(value);
+          Get.back();
         } else {
           MySnackBar.show(title: 'User not found', message: "insert a valid username to contact", backgroundColor: Colors.amber, icon: Icons.verified_user_outlined);
         }
