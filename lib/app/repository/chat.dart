@@ -9,7 +9,7 @@ import 'package:tcp_workers/app/views/signIn/user_model.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 
 class ChatRepository {
-    RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs;
   Future<List<Conversation>> getConversations({UserModel user}) async {
     List<Conversation> listChats = [];
 
@@ -24,7 +24,7 @@ class ChatRepository {
     }
   }
 
-  Future<Conversation> setNewConversation(
+  Future<http.Response> setNewConversation(
       {String userToContact, UserModel currentUser}) async {
     Conversation _conversation = Conversation();
     try {
@@ -34,15 +34,15 @@ class ChatRepository {
             "findUser": userToContact,
             "currentUser": currentUser.user.nickName,
             "createAt": DateTime.now().millisecondsSinceEpoch.toString()
-          });
+          });/*
       print(response.statusCode);
       if (response.statusCode == 200) {
         _conversation = Conversation.fromJson(json.decode(response.body));
-      }
-      return _conversation;
+      }*/
+      return response;
     } catch (e) {
       print("error set new Conversation: $e");
-      return Conversation.fromJson({});
+      return null;
     }
   }
 
@@ -56,7 +56,4 @@ class ChatRepository {
       return messagesFromJson("");
     }
   }
-
-
-  
 }

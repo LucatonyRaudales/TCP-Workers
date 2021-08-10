@@ -9,6 +9,8 @@ import 'package:tcp_workers/app/common/validations.dart';
 import 'package:tcp_workers/app/models/conversations.dart';
 import 'package:tcp_workers/app/repository/chat.dart';
 import 'package:get/get.dart';
+import 'package:tcp_workers/app/views/chat/chat_page/chat_bindings.dart';
+import 'package:tcp_workers/app/views/chat/chat_page/chat_detail.dart';
 import 'package:tcp_workers/app/views/signIn/user_model.dart';
 
 class ConversationController extends GetxController {
@@ -72,14 +74,31 @@ class ConversationController extends GetxController {
       isLoading.value = true;
       _repository
           .setNewConversation(userToContact: userToContact, currentUser: user)
-          .then((value) {
-        if (value.id != null) {
-          conversations.add(value);
-          Get.back();
-        } else {
-          MySnackBar.show(title: 'User not found', message: "insert a valid username to contact", backgroundColor: Colors.amber, icon: Icons.verified_user_outlined);
+          .then((res) {
+        switch (res.statusCode) {
+          case 200:
+            Get.back();
+            Conversation chat = Conversation.fromJson(json.decode(res.body));
+            conversations.add(chat);
+            Get.to(() => ChatDetail(),
+                binding: ChatBinding(),
+                arguments: {"chatID": chat.id, "user": user});
+            break;
+          case 405:
+            Get.back();
+            Conversation chat = Conversation.fromJson(json.decode(res.body));
+            Get.to(() => ChatDetail(),
+                binding: ChatBinding(),
+                arguments: {"chatID": chat.id, "user": user});
+            break;
+          default:
+            MySnackBar.show(
+                title: 'User not found',
+                message: "insert a valid username to contact",
+                backgroundColor: Colors.amber,
+                icon: Icons.no_accounts_outlined);
         }
-          isLoading.value = false;
+        isLoading.value = false;
       });
     } catch (e) {
       print("error findUserAndCreateChat: $e");

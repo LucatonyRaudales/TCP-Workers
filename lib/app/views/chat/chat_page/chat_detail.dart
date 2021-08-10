@@ -9,6 +9,7 @@ class ChatDetail extends GetView<ChatController> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
+      appBar: AppBar(centerTitle: true, title: new Text("Chat"),),
       body: controller.obx((state) => Chat(
         messages: controller.messages,
         onAttachmentPressed: controller.handleAtachmentPressed,

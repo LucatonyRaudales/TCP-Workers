@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:tcp_workers/app/common/variables.dart';
 import 'package:tcp_workers/app/repository/chat.dart';
 import 'package:tcp_workers/app/views/signIn/user_model.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -55,7 +56,7 @@ class ChatController extends GetxController
     try {
       print("hola3");
       socket = io(
-          'http://192.168.1.7:3001',
+          GlobalVariables.api,
           OptionBuilder()
               .setTransports(['websocket']) // for Flutter or Dart VM
               .enableForceNewConnection() // necessary because otherwise it would reuse old connection
