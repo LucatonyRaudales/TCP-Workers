@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:tcp_workers/app/Style/Colors.dart';
+import 'package:tcp_workers/app/Style/text.dart';
+import 'package:tcp_workers/app/common/appbar.dart';
 import 'package:tcp_workers/app/views/chat/chat_page/chat_bindings.dart';
 import 'package:tcp_workers/app/views/chat/chat_page/chat_detail.dart';
 
@@ -19,56 +22,37 @@ class _ChatPageState extends State<ChatPage> {
     return GetBuilder<ConversationController>(
         init: ConversationController(),
         builder: (_ctrl) => Scaffold(
+              appBar: MyAppBar(
+                title: "Conversations",
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: InkWell(
+                      onTap: () => _ctrl.newConversation(context: context),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "New".toUpperCase(),
+                            style: subTitleWhiteFont,
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Icon(
+                            Icons.add,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               body: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SafeArea(
-                        child: Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Chats",
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                left: 8, right: 8, top: 2, bottom: 2),
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.pink[50],
-                            ),
-                            child: InkWell(
-                              onTap: () =>
-                                  _ctrl.newConversation(context: context),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.pink,
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
-                                  Text(
-                                    "New",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )),
                     Padding(
                       padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                       child: TextField(
@@ -113,9 +97,8 @@ class _ChatPageState extends State<ChatPage> {
                                     child: Row(
                                       children: <Widget>[
                                         CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              "https://images.chicmagazine.com.mx/_062oIVC8E9OIjKTQN15qOL_4Cg=/958x596/uploads/media/2020/09/04/brad-pitt-llevo-novia-caso.jpg"),
-                                          maxRadius: 30,
+                                          child: Icon(Icons.person),
+                                          maxRadius: 15,
                                         ),
                                         SizedBox(
                                           width: 16,
@@ -129,22 +112,20 @@ class _ChatPageState extends State<ChatPage> {
                                               children: <Widget>[
                                                 Text(_ctrl.conversations[index]
                                                     .users[0].username
-                                                    .toString()),
+                                                    .toString(), style: subTitleFontBold),
                                                 SizedBox(
                                                   height: 6,
                                                 ),
                                                 Text(
-                                                  DateFormat.yMEd().format(DateTime
+                                                  DateFormat.yMEd()
+                                                      .format(DateTime
                                                           .fromMillisecondsSinceEpoch(
                                                               _ctrl
                                                                   .conversations[
                                                                       index]
                                                                   .createAt))
                                                       .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color:
-                                                          Colors.grey.shade500),
+                                                  style: bodyFont,
                                                 ),
                                               ],
                                             ),
@@ -153,6 +134,8 @@ class _ChatPageState extends State<ChatPage> {
                                       ],
                                     ),
                                   ),
+                                  Icon(Icons.arrow_forward_ios, size: 15, color: main_color,)
+                                  /*
                                   Text(
                                     _ctrl.conversations[index].createAt
                                         .toString(),
@@ -161,7 +144,7 @@ class _ChatPageState extends State<ChatPage> {
                                         color: true
                                             ? Colors.pink
                                             : Colors.grey.shade500),
-                                  ),
+                                  ),*/
                                 ],
                               ),
                             ),

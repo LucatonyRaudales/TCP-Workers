@@ -10,6 +10,7 @@ import 'package:tcp_workers/app/common/drawer.dart';
 import 'package:tcp_workers/app/common/home_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tcp_workers/app/common/progressBar.dart';
+import 'package:tcp_workers/app/socket/setting.dart';
 import 'package:tcp_workers/app/views/Job/my_jobs/jobList_page.dart';
 import 'package:tcp_workers/app/views/chat/conversations_page/chats_page.dart';
 import 'package:tcp_workers/app/views/splash_screen/splash_page.dart';
@@ -23,9 +24,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final box = GetStorage();
+  final socketIO = Get.put(SocketIOController());
+
   void logout() async {
     await box.erase();
     Get.off(SplashPage(), transition: Transition.fade);
+  }
+
+  @override
+  void initState() {
+    socketIO.connectToServer();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

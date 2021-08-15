@@ -9,6 +9,7 @@ import 'package:open_file/open_file.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tcp_workers/app/common/variables.dart';
 import 'package:tcp_workers/app/repository/chat.dart';
+import 'package:tcp_workers/app/socket/setting.dart';
 import 'package:tcp_workers/app/views/signIn/user_model.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -26,13 +27,16 @@ class ChatController extends GetxController
   String chatID = "";
   types.User userChat;
 
+  final socketController = Get.put(SocketIOController());
+
   @override
   void onInit() {
     user = Get.arguments["user"];
     userChat = types.User(id: user.user.id, firstName: user.user.nickName);
     chatID = Get.arguments["chatID"];
     print("iniciado $chatID");
-    connect();
+    //connect();
+    getMessages();
     super.onInit();
   }
 
@@ -70,7 +74,7 @@ class ChatController extends GetxController
       print(socket.connected);
       socket.on('chat:message', (data) {
         print(data);
-       /* var message = types.Message.fromJson(data);
+        /* var message = types.Message.fromJson(data);
         messages.insert(0, message);
         update();
         
@@ -224,7 +228,8 @@ class ChatController extends GetxController
       text: message.text,
     );
     print(textMessage.toJson());
-    sendMessage(textMessage);
+    socketController.sendMessage(textMessage);
+    //sendMessage(textMessage);
     _addMessage(textMessage);
   }
 }

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
+import 'package:tcp_workers/app/common/appbar.dart';
 import 'chat_controller.dart';
 
 class ChatDetail extends GetView<ChatController> {
+   final ChatController c = Get.put(ChatController());
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: new Text("Chat"),),
+      appBar: MyAppBar(title:c.user.user.nickName ?? " ... "),
       body: controller.obx((state) => Chat(
         messages: controller.messages,
         onAttachmentPressed: controller.handleAtachmentPressed,
